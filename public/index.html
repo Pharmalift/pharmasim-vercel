@@ -15,12 +15,14 @@
         .logo h1 span { color: #3b82f6; }
         .badge-pro { background: linear-gradient(135deg, #f59e0b, #d97706); padding: 4px 10px; border-radius: 6px; font-size: 11px; font-weight: 700; margin-left: 8px; }
         .status-badge { padding: 8px 16px; border-radius: 20px; font-size: 12px; font-weight: 600; background: rgba(139,92,246,0.2); color: #a78bfa; }
-        .scenario-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; margin-bottom: 30px; }
-        .scenario-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 24px; cursor: pointer; transition: all 0.3s; }
+        .category-title { font-size: 16px; margin: 32px 0 16px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.08); color: #e2e8f0; }
+        .category-title:first-of-type { margin-top: 0; }
+        .scenario-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-bottom: 20px; }
+        .scenario-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 20px; cursor: pointer; transition: all 0.3s; }
         .scenario-card:hover { background: rgba(255,255,255,0.08); border-color: #3b82f6; transform: translateY(-2px); }
-        .scenario-card .avatar { width: 60px; height: 60px; background: linear-gradient(135deg, #fbbf24, #f59e0b); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; margin-bottom: 16px; }
-        .scenario-card h3 { font-size: 18px; margin-bottom: 8px; }
-        .scenario-card p { font-size: 13px; color: #94a3b8; line-height: 1.5; }
+        .scenario-card .avatar { width: 52px; height: 52px; background: linear-gradient(135deg, #fbbf24, #f59e0b); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 26px; margin-bottom: 12px; }
+        .scenario-card h3 { font-size: 16px; margin-bottom: 6px; }
+        .scenario-card p { font-size: 12px; color: #94a3b8; line-height: 1.4; }
         .game-container { display: none; grid-template-columns: 1fr 320px; gap: 24px; }
         .game-container.active { display: grid; }
         .chat-panel { background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; overflow: hidden; }
@@ -77,46 +79,169 @@
         </header>
         <div id="scenarioSelection">
             <h2 style="margin-bottom:24px;">Choisissez un scénario</h2>
+
+            <h3 class="category-title">🔴 Risques critiques</h3>
+            <div class="scenario-grid">
+                <div class="scenario-card" onclick="selectScenario('douleur_thoracique')">
+                    <div class="avatar" style="background:linear-gradient(135deg,#ef4444,#dc2626);">⚠️</div>
+                    <h3>M. Durand</h3>
+                    <p>45 ans • Douleur thoracique. Signes d'alerte cardiaque à repérer !</p>
+                </div>
+                <div class="scenario-card" onclick="selectScenario('femme_enceinte_medicaments')">
+                    <div class="avatar" style="background:linear-gradient(135deg,#f472b6,#ec4899);">🤰</div>
+                    <h3>Mme Laurent</h3>
+                    <p>29 ans • Enceinte avec nausées. A pris un AINS sans le savoir.</p>
+                </div>
+                <div class="scenario-card" onclick="selectScenario('personne_agee_polymediquee')">
+                    <div class="avatar" style="background:linear-gradient(135deg,#a78bfa,#7c3aed);">👵</div>
+                    <h3>Mme Mercier</h3>
+                    <p>82 ans • 12 médicaments, confuse. Iatrogénie et chutes à détecter.</p>
+                </div>
+                <div class="scenario-card" onclick="selectScenario('intoxication_enfant')">
+                    <div class="avatar" style="background:linear-gradient(135deg,#ef4444,#b91c1c);">🆘</div>
+                    <h3>Mme Girard</h3>
+                    <p>Enfant 2 ans a avalé des médicaments. Gestion urgence toxicologique.</p>
+                </div>
+            </div>
+
+            <h3 class="category-title">🟠 Conseil spécialisé</h3>
             <div class="scenario-grid">
                 <div class="scenario-card" onclick="selectScenario('mme_dubois')">
                     <div class="avatar">👩‍🦳</div>
                     <h3>Mme Dubois</h3>
-                    <p>58 ans • Ordonnance + maux de tête. Attention aux interactions cachées...</p>
+                    <p>58 ans • Ordonnance + maux de tête. Interactions cachées.</p>
                 </div>
                 <div class="scenario-card" onclick="selectScenario('aromatherapie')">
                     <div class="avatar" style="background:linear-gradient(135deg,#34d399,#10b981);">🌿</div>
                     <h3>Mme Martin</h3>
-                    <p>42 ans • Huiles essentielles pour stress/sommeil. Traitement anxiolytique caché.</p>
+                    <p>42 ans • Huiles essentielles stress/sommeil. Anxiolytique caché.</p>
                 </div>
+                <div class="scenario-card" onclick="selectScenario('phytotherapie_prostate')">
+                    <div class="avatar" style="background:linear-gradient(135deg,#22c55e,#16a34a);">🌱</div>
+                    <h3>M. Bernard</h3>
+                    <p>62 ans • Prostate, veut du naturel. Traitement arrêté, PSA non suivi.</p>
+                </div>
+                <div class="scenario-card" onclick="selectScenario('micronutrition_fatigue')">
+                    <div class="avatar" style="background:linear-gradient(135deg,#fb923c,#f97316);">🥗</div>
+                    <h3>Mme Faure</h3>
+                    <p>35 ans • Fatigue intense, jeune maman. Carences cachées.</p>
+                </div>
+                <div class="scenario-card" onclick="selectScenario('menopause')">
+                    <div class="avatar" style="background:linear-gradient(135deg,#f9a8d4,#ec4899);">🌸</div>
+                    <h3>Mme Blanchard</h3>
+                    <p>52 ans • Ménopause, refuse le THS. Antécédent familial cancer.</p>
+                </div>
+                <div class="scenario-card" onclick="selectScenario('detox_drainage')">
+                    <div class="avatar" style="background:linear-gradient(135deg,#86efac,#22c55e);">🧃</div>
+                    <h3>Mme Petit</h3>
+                    <p>28 ans • Cure détox Instagram. Possible TCA à dépister.</p>
+                </div>
+                <div class="scenario-card" onclick="selectScenario('sport_recuperation')">
+                    <div class="avatar" style="background:linear-gradient(135deg,#60a5fa,#3b82f6);">🏃</div>
+                    <h3>Thomas</h3>
+                    <p>32 ans • Marathon, courbatures. Hydratation et progressivité.</p>
+                </div>
+            </div>
+
+            <h3 class="category-title">🟡 Populations spécifiques</h3>
+            <div class="scenario-grid">
                 <div class="scenario-card" onclick="selectScenario('pediatrie')">
                     <div class="avatar" style="background:linear-gradient(135deg,#60a5fa,#3b82f6);">👶</div>
                     <h3>M. Petit (père)</h3>
-                    <p>Enfant 3 ans fiévreux. Antécédent de convulsion fébrile à détecter.</p>
+                    <p>Enfant 3 ans fiévreux. Convulsion fébrile à détecter.</p>
                 </div>
+                <div class="scenario-card" onclick="selectScenario('bebe_coliques')">
+                    <div class="avatar" style="background:linear-gradient(135deg,#fbbf24,#f59e0b);">👶</div>
+                    <h3>Mme Dupont</h3>
+                    <p>Bébé 3 semaines, coliques. Baby blues maternel à dépister.</p>
+                </div>
+                <div class="scenario-card" onclick="selectScenario('personne_agee_isolee')">
+                    <div class="avatar" style="background:linear-gradient(135deg,#94a3b8,#64748b);">🧓</div>
+                    <h3>M. Martin</h3>
+                    <p>78 ans • Confus, isolé. Fragilité et risque domestique.</p>
+                </div>
+                <div class="scenario-card" onclick="selectScenario('femme_enceinte_rhume')">
+                    <div class="avatar" style="background:linear-gradient(135deg,#fca5a5,#f87171);">🤧</div>
+                    <h3>Mme Chen</h3>
+                    <p>34 ans • Enceinte, rhume et fièvre. Automédication à risque.</p>
+                </div>
+                <div class="scenario-card" onclick="selectScenario('patient_diabetique')">
+                    <div class="avatar" style="background:linear-gradient(135deg,#c084fc,#a855f7);">💉</div>
+                    <h3>M. Koné</h3>
+                    <p>58 ans • Diabétique, veut un sirop. Adaptation au terrain.</p>
+                </div>
+            </div>
+
+            <h3 class="category-title">🟢 Dermatologie comptoir</h3>
+            <div class="scenario-grid">
                 <div class="scenario-card" onclick="selectScenario('dermato')">
                     <div class="avatar" style="background:linear-gradient(135deg,#f472b6,#ec4899);">💆</div>
                     <h3>Emma</h3>
-                    <p>16 ans • Acné. A utilisé des produits internet dangereux.</p>
+                    <p>16 ans • Acné. Produits internet dangereux.</p>
                 </div>
-                <div class="scenario-card" onclick="selectScenario('phytotherapie')">
-                    <div class="avatar" style="background:linear-gradient(135deg,#22c55e,#16a34a);">🌱</div>
-                    <h3>M. Bernard</h3>
-                    <p>62 ans • Problèmes prostate, veut du naturel. Traitement arrêté en cachette.</p>
+                <div class="scenario-card" onclick="selectScenario('eczema_bebe')">
+                    <div class="avatar" style="background:linear-gradient(135deg,#fbbf24,#f59e0b);">👧</div>
+                    <h3>Mme Dubois-Morel</h3>
+                    <p>Bébé 8 mois, eczéma. Corticophobie à lever.</p>
                 </div>
-                <div class="scenario-card" onclick="selectScenario('micronutrition')">
-                    <div class="avatar" style="background:linear-gradient(135deg,#fb923c,#f97316);">🥗</div>
-                    <h3>Mme Faure</h3>
-                    <p>35 ans • Fatigue intense, jeune maman. Carences cachées à détecter.</p>
+                <div class="scenario-card" onclick="selectScenario('mycose_pied')">
+                    <div class="avatar" style="background:linear-gradient(135deg,#34d399,#10b981);">🦶</div>
+                    <h3>M. Fernandez</h3>
+                    <p>42 ans • Mycose pied, piscine. Diabète non signalé.</p>
                 </div>
+                <div class="scenario-card" onclick="selectScenario('poux')">
+                    <div class="avatar" style="background:linear-gradient(135deg,#fb923c,#f97316);">🪳</div>
+                    <h3>Mme Martinez</h3>
+                    <p>3 enfants, poux récidivants. Traitement incomplet.</p>
+                </div>
+                <div class="scenario-card" onclick="selectScenario('coup_de_soleil')">
+                    <div class="avatar" style="background:linear-gradient(135deg,#fbbf24,#f59e0b);">☀️</div>
+                    <h3>Lucas</h3>
+                    <p>22 ans • Coup de soleil sévère. Médicament photosensibilisant.</p>
+                </div>
+                <div class="scenario-card" onclick="selectScenario('herpes_labial')">
+                    <div class="avatar" style="background:linear-gradient(135deg,#f9a8d4,#ec4899);">💋</div>
+                    <h3>Julie</h3>
+                    <p>27 ans • Herpès récidivant. Contagiosité et prévention.</p>
+                </div>
+            </div>
+
+            <h3 class="category-title">🔵 Situations délicates</h3>
+            <div class="scenario-grid">
                 <div class="scenario-card" onclick="selectScenario('veterinaire')">
                     <div class="avatar" style="background:linear-gradient(135deg,#a78bfa,#7c3aed);">🐱</div>
                     <h3>Mme Rossi</h3>
-                    <p>55 ans • Chat malade. Automédication humaine dangereuse sur l'animal.</p>
+                    <p>55 ans • Chat malade. Advil donné à l'animal.</p>
                 </div>
-                <div class="scenario-card" onclick="selectScenario('urgence')">
-                    <div class="avatar" style="background:linear-gradient(135deg,#ef4444,#dc2626);">⚠️</div>
-                    <h3>M. Durand</h3>
-                    <p>45 ans • Douleur thoracique. Signes d'alerte cardiaque à repérer !</p>
+                <div class="scenario-card" onclick="selectScenario('contraception_urgence')">
+                    <div class="avatar" style="background:linear-gradient(135deg,#60a5fa,#3b82f6);">💊</div>
+                    <h3>Claire</h3>
+                    <p>19 ans • Contraception d'urgence. Oublis récurrents.</p>
+                </div>
+                <div class="scenario-card" onclick="selectScenario('test_grossesse_positif')">
+                    <div class="avatar" style="background:linear-gradient(135deg,#c4b5fd,#8b5cf6);">🥺</div>
+                    <h3>Inès</h3>
+                    <p>23 ans • Test positif, en pleurs. Écoute et orientation.</p>
+                </div>
+                <div class="scenario-card" onclick="selectScenario('sevrage_tabac')">
+                    <div class="avatar" style="background:linear-gradient(135deg,#94a3b8,#64748b);">🚬</div>
+                    <h3>M. Leroy</h3>
+                    <p>55 ans • Veut arrêter de fumer. BPCO, forte dépendance.</p>
+                </div>
+                <div class="scenario-card" onclick="selectScenario('dependance_benzodiazepines')">
+                    <div class="avatar" style="background:linear-gradient(135deg,#fca5a5,#f87171);">😰</div>
+                    <h3>Mme Roux</h3>
+                    <p>65 ans • Demande Lexomil sans ordonnance. Dépendance.</p>
+                </div>
+                <div class="scenario-card" onclick="selectScenario('patient_agressif')">
+                    <div class="avatar" style="background:linear-gradient(135deg,#ef4444,#dc2626);">😠</div>
+                    <h3>M. Sanchez</h3>
+                    <p>40 ans • Rupture médicament. Désescalade et empathie.</p>
+                </div>
+                <div class="scenario-card" onclick="selectScenario('suspicion_maltraitance')">
+                    <div class="avatar" style="background:linear-gradient(135deg,#475569,#334155);">💔</div>
+                    <h3>Timéo (7 ans)</h3>
+                    <p>Bleus récurrents. Observation et protocole signalement.</p>
                 </div>
             </div>
         </div>
@@ -151,14 +276,35 @@
     </div>
     <script>
         const SCENARIOS = {
+            douleur_thoracique: { name: "M. Durand", age: 45, avatar: "⚠️", info: "Pressé, minimise", suggestions: ["Où exactement la douleur ?", "Irradiation bras ?", "Essoufflement ?", "Antécédents familiaux ?"] },
+            femme_enceinte_medicaments: { name: "Mme Laurent", age: 29, avatar: "🤰", info: "Enceinte, inquiète", suggestions: ["Pris quelque chose ?", "Quel trimestre ?", "Vomissements ?", "Suivi par qui ?"] },
+            personne_agee_polymediquee: { name: "Mme Mercier", age: 82, avatar: "👵", info: "Confuse, polymédiquée", suggestions: ["Combien de médicaments ?", "Chutes récentes ?", "Vivez seule ?", "Mangez bien ?"] },
+            intoxication_enfant: { name: "Mme Girard", age: 30, avatar: "🆘", info: "Paniquée", suggestions: ["Quel médicament ?", "Combien de comprimés ?", "Il y a combien de temps ?", "Poids de l'enfant ?"] },
             mme_dubois: { name: "Mme Dubois", age: 58, avatar: "👩‍🦳", info: "Pressée mais coopérative", suggestions: ["Autres médicaments ?", "Pris quelque chose ce matin ?", "Antécédents ?", "Décrivez la douleur"] },
             aromatherapie: { name: "Mme Martin", age: 42, avatar: "🌿", info: "Anxieuse, cherche du naturel", suggestions: ["Prenez-vous des médicaments ?", "Utilisez déjà des HE ?", "Antécédents respiratoires ?", "Allergies cutanées ?"] },
+            phytotherapie_prostate: { name: "M. Bernard", age: 62, avatar: "🌱", info: "Méfiant, préfère le naturel", suggestions: ["Autres médicaments ?", "Traitement prescrit ?", "Suivi urologique ?", "Sang dans les urines ?"] },
+            micronutrition_fatigue: { name: "Mme Faure", age: 35, avatar: "🥗", info: "Épuisée, jeune maman", suggestions: ["Vous allaitez ?", "Régime alimentaire ?", "Autres symptômes ?", "Règles normales ?"] },
+            menopause: { name: "Mme Blanchard", age: 52, avatar: "🌸", info: "Gênée, bouffées de chaleur", suggestions: ["Pourquoi refuser le THS ?", "Prenez des compléments ?", "Sommeil ?", "Antécédents familiaux ?"] },
+            detox_drainage: { name: "Mme Petit", age: 28, avatar: "🧃", info: "Influencée, wellness", suggestions: ["Régime alimentaire ?", "Perte de poids récente ?", "Laxatifs ?", "Cheveux, ongles ?"] },
+            sport_recuperation: { name: "Thomas", age: 32, avatar: "🏃", info: "Sportif motivé", suggestions: ["Hydratation ?", "Compléments pris ?", "Crampes ?", "Depuis quand le sport ?"] },
             pediatrie: { name: "M. Petit", age: 35, avatar: "👶", info: "Père inquiet", suggestions: ["Quelle température ?", "Déjà donné quelque chose ?", "Antécédents de Lucas ?", "Combien pèse-t-il ?"] },
+            bebe_coliques: { name: "Mme Dupont", age: 30, avatar: "👶", info: "Épuisée, premier bébé", suggestions: ["Allaitement ou biberon ?", "Vu le pédiatre ?", "Régurgitations ?", "Comment vous sentez-vous ?"] },
+            personne_agee_isolee: { name: "M. Martin", age: 78, avatar: "🧓", info: "Fier, refuse l'aide", suggestions: ["Vivez seul ?", "Mangez bien ?", "Oubliez vos médicaments ?", "Besoin d'aide au quotidien ?"] },
+            femme_enceinte_rhume: { name: "Mme Chen", age: 34, avatar: "🤧", info: "Enceinte, enrhumée", suggestions: ["Avez-vous de la fièvre ?", "Pris quelque chose ?", "Appelé la sage-femme ?", "Depuis quand ?"] },
+            patient_diabetique: { name: "M. Koné", age: 58, avatar: "💉", info: "Diabétique, aime le sucré", suggestions: ["Êtes-vous diabétique ?", "Sirop sans sucre ?", "Suivi régulier ?", "Pieds, sensations ?"] },
             dermato: { name: "Emma", age: 16, avatar: "💆", info: "Timide, gênée", suggestions: ["Produits utilisés ?", "Type de peau ?", "Routine actuelle ?", "Depuis combien de temps ?"] },
-            phytotherapie: { name: "M. Bernard", age: 62, avatar: "🌱", info: "Méfiant, préfère le naturel", suggestions: ["Autres médicaments ?", "Traitement prescrit ?", "Suivi urologique ?", "Depuis quand ces symptômes ?"] },
-            micronutrition: { name: "Mme Faure", age: 35, avatar: "🥗", info: "Épuisée, jeune maman", suggestions: ["Vous allaitez ?", "Régime alimentaire ?", "Autres symptômes ?", "Règles normales ?"] },
-            veterinaire: { name: "Mme Rossi", age: 55, avatar: "🐱", info: "Propriétaire inquiète", suggestions: ["Donné quelque chose au chat ?", "Vu le vétérinaire ?", "Autres symptômes ?", "Depuis combien de temps ?"] },
-            urgence: { name: "M. Durand", age: 45, avatar: "⚠️", info: "Pressé, minimise", suggestions: ["Où exactement la douleur ?", "Irradiation ?", "Essoufflement ?", "Antécédents familiaux ?"] }
+            eczema_bebe: { name: "Mme Dubois-Morel", age: 32, avatar: "👧", info: "Corticophobie", suggestions: ["Appliquez la crème prescrite ?", "Crèmes utilisées ?", "Asthme familial ?", "Bébé dort bien ?"] },
+            mycose_pied: { name: "M. Fernandez", age: 42, avatar: "🦶", info: "Gêné, sportif", suggestions: ["Depuis combien de temps ?", "Piscine, sport ?", "Diabétique ?", "Déjà traité ?"] },
+            poux: { name: "Mme Martinez", age: 38, avatar: "🪳", info: "Débordée, 3 enfants", suggestions: ["Parents traités aussi ?", "Literie lavée ?", "Produit utilisé ?", "École prévenue ?"] },
+            coup_de_soleil: { name: "Lucas", age: 22, avatar: "☀️", info: "Étudiant, fête plage", suggestions: ["Des cloques ?", "Prenez des médicaments ?", "Crème solaire ?", "Grains de beauté ?"] },
+            herpes_labial: { name: "Julie", age: 27, avatar: "💋", info: "Stressée, entretien demain", suggestions: ["Fréquence des poussées ?", "Quand avez-vous appliqué ?", "Contagion, précautions ?", "Vu un médecin ?"] },
+            veterinaire: { name: "Mme Rossi", age: 55, avatar: "🐱", info: "Propriétaire inquiète", suggestions: ["Donné quelque chose au chat ?", "Vu le vétérinaire ?", "Perte de poids ?", "Depuis combien de temps ?"] },
+            contraception_urgence: { name: "Claire", age: 19, avatar: "💊", info: "Gênée, stressée", suggestions: ["Il y a combien de temps ?", "Contraception habituelle ?", "Cycle régulier ?", "Suivi gynéco ?"] },
+            test_grossesse_positif: { name: "Inès", age: 23, avatar: "🥺", info: "En pleurs, perdue", suggestions: ["Souhaitez-vous en parler ?", "Entourée ?", "Connaissez vos options ?", "Suivi médical ?"] },
+            sevrage_tabac: { name: "M. Leroy", age: 55, avatar: "🚬", info: "Fumeur, sceptique", suggestions: ["Combien par jour ?", "Première cigarette quand ?", "Déjà essayé quoi ?", "Problèmes respiratoires ?"] },
+            dependance_benzodiazepines: { name: "Mme Roux", age: 65, avatar: "😰", info: "Anxieuse, suppliante", suggestions: ["Depuis combien de temps ?", "Doses augmentées ?", "Autres somnifères ?", "Votre médecin en pense quoi ?"] },
+            patient_agressif: { name: "M. Sanchez", age: 40, avatar: "😠", info: "En colère", suggestions: ["Depuis quand sans traitement ?", "Symptômes de manque ?", "On peut chercher une solution", "Médecin joignable ?"] },
+            suspicion_maltraitance: { name: "Mère de Timéo", age: 35, avatar: "💔", info: "Répond à la place de l'enfant", suggestions: ["Comment c'est arrivé ?", "Déjà arrivé avant ?", "Timéo, tu peux me montrer ?", "D'autres bleus ?"] }
         };
         let currentScenario = null, messages = [], score = 0, isTyping = false;
 
@@ -168,7 +314,7 @@
             document.getElementById('patientAvatar').textContent = currentScenario.avatar;
             document.getElementById('patientName').textContent = currentScenario.name;
             document.getElementById('patientInfo').textContent = currentScenario.age + " ans • " + currentScenario.info;
-            document.getElementById('suggestions').innerHTML = currentScenario.suggestions.map(s => `<button onclick="useSuggestion('${s}')">${s}</button>`).join('');
+            document.getElementById('suggestions').innerHTML = currentScenario.suggestions.map(s => `<button onclick="useSuggestion('${s.replace(/'/g, "\\'")}')">${s}</button>`).join('');
             document.getElementById('messages').innerHTML = '';
             document.getElementById('scoreValue').textContent = '0';
             document.getElementById('scoreBar').style.width = '0%';
@@ -230,41 +376,94 @@
 
         function updateScore(q, a) {
             const ql = q.toLowerCase(), al = a.toLowerCase();
-            if ((ql.includes('autre') && ql.includes('médicament')) || ql.includes('traitement')) {
-                if (al.includes('kardégic') || al.includes('lexomil') || al.includes('cardiologue') || al.includes('tamsulosine') || al.includes('arrêté')) score += 25;
+            let points = 0;
+            // Médicaments cachés
+            if ((ql.includes('autre') && ql.includes('médicament')) || ql.includes('traitement') || ql.includes('prenez')) {
+                if (al.includes('kardégic') || al.includes('lexomil') || al.includes('cardiologue') || al.includes('tamsulosine') || al.includes('arrêté') || al.includes('metformine') || al.includes('acide folique') || al.includes('stilnox') || al.includes('antidépresseur') || al.includes('pilule')) points += 25;
             }
-            if (ql.includes('pris') || ql.includes('donné') || ql.includes('automédication')) {
-                if (al.includes('advil') || al.includes('doliprane') || al.includes('internet') || al.includes('tiktok') || al.includes('écrasé') || al.includes('pâtée')) score += 20;
+            // Automédication
+            if (ql.includes('pris') || ql.includes('donné') || ql.includes('automédication') || ql.includes('utilisé') || ql.includes('appliqué')) {
+                if (al.includes('advil') || al.includes('ibuprofène') || al.includes('doliprane') || al.includes('internet') || al.includes('tiktok') || al.includes('écrasé') || al.includes('pâtée') || al.includes('laxatif') || al.includes('périmé') || al.includes('mayonnaise') || al.includes('grog') || al.includes('alcool') || al.includes('sirop') || al.includes('protéine') || al.includes('soja')) points += 20;
             }
-            if (ql.includes('antécédent') || ql.includes('passé') || ql.includes('famil')) {
-                if (al.includes('ulcère') || al.includes('asthme') || al.includes('convulsion') || al.includes('infarctus') || al.includes('père') || al.includes('décédé')) score += 20;
+            // Antécédents
+            if (ql.includes('antécédent') || ql.includes('passé') || ql.includes('famil') || ql.includes('déjà eu')) {
+                if (al.includes('ulcère') || al.includes('asthme') || al.includes('convulsion') || al.includes('infarctus') || al.includes('père') || al.includes('décédé') || al.includes('cancer') || al.includes('bpco') || al.includes('diabèt')) points += 20;
             }
-            if (ql.includes('allergie')) score += 10;
-            if (ql.includes('allait') || ql.includes('bébé') || ql.includes('nourri')) {
-                if (al.includes('allait') || al.includes('bébé') || al.includes('4 mois')) score += 25;
+            // Allergies
+            if (ql.includes('allergie')) points += 10;
+            // Allaitement / grossesse
+            if (ql.includes('allait') || ql.includes('enceinte') || ql.includes('bébé') || ql.includes('nourri') || ql.includes('trimestre')) {
+                if (al.includes('allait') || al.includes('bébé') || al.includes('4 mois') || al.includes('enceinte') || al.includes('mois')) points += 25;
             }
-            if (ql.includes('régime') || ql.includes('alimenta') || ql.includes('mange')) {
-                if (al.includes('végétari') || al.includes('viande')) score += 20;
+            // Régime alimentaire
+            if (ql.includes('régime') || ql.includes('alimenta') || ql.includes('mange') || ql.includes('nutrition')) {
+                if (al.includes('végétari') || al.includes('viande') || al.includes('conserve') || al.includes('jeûne') || al.includes('peu')) points += 20;
             }
-            if (ql.includes('règle') || ql.includes('cheveu') || ql.includes('perte')) {
-                if (al.includes('règle') || al.includes('abondant') || al.includes('cheveu')) score += 20;
+            // Symptômes spécifiques
+            if (ql.includes('règle') || ql.includes('cheveu') || ql.includes('perte') || ql.includes('ongle')) {
+                if (al.includes('règle') || al.includes('abondant') || al.includes('cheveu') || al.includes('cassant')) points += 20;
             }
-            if ((ql.includes('irrad') || ql.includes('bras')) && al.includes('bras')) score += 25;
-            if (ql.includes('essouffle') && (al.includes('essouffle') || al.includes('souffle'))) score += 20;
-            if (ql.includes('fum') && (al.includes('fum') || al.includes('paquet'))) score += 15;
+            // Urgence cardiaque
+            if ((ql.includes('irrad') || ql.includes('bras')) && al.includes('bras')) points += 25;
+            if (ql.includes('essouffle') && (al.includes('essouffle') || al.includes('souffle'))) points += 20;
+            if (ql.includes('fum') && (al.includes('fum') || al.includes('paquet'))) points += 15;
+            // Réorientation urgence/médecin
+            if (ql.includes('urgence') || ql.includes('hôpital') || ql.includes('15') || ql.includes('samu') || ql.includes('antipoison') || ql.includes('114')) points += 25;
+            if (ql.includes('médecin') || ql.includes('sage-femme') || ql.includes('gynéco') || ql.includes('pédiatre') || ql.includes('planning')) points += 15;
+            // Vétérinaire
             if (ql.includes('vétérinaire') || ql.includes('véto')) {
-                if (al.includes('véto') || al.includes('2 ans') || al.includes('pas vu')) score += 20;
+                if (al.includes('véto') || al.includes('2 ans') || al.includes('pas vu')) points += 20;
             }
-            if (ql.includes('psa') || ql.includes('prostate') && ql.includes('contrôl')) {
-                if (al.includes('psa') || al.includes('contrôl') || al.includes('3 ans')) score += 25;
+            // Prostate / suivi
+            if ((ql.includes('psa') || (ql.includes('prostate') && ql.includes('contrôl')) || ql.includes('urolog'))) {
+                if (al.includes('psa') || al.includes('contrôl') || al.includes('3 ans') || al.includes('sang')) points += 25;
             }
-            if (ql.includes('urgence') || ql.includes('hôpital') || ql.includes('15') || ql.includes('samu')) score += 25;
-            document.getElementById('scoreValue').textContent = score;
-            document.getElementById('scoreBar').style.width = Math.min(score, 100) + '%';
+            // Diabète et terrain
+            if (ql.includes('diabèt') || ql.includes('sucre') || ql.includes('glycémi')) {
+                if (al.includes('diabèt') || al.includes('metformine') || al.includes('sucr')) points += 20;
+            }
+            // Cloques / gravité
+            if (ql.includes('cloque') || ql.includes('gravité') || ql.includes('degré')) {
+                if (al.includes('cloque') || al.includes('2ème')) points += 20;
+            }
+            // Photosensibilisation
+            if ((ql.includes('antibiotique') || ql.includes('médicament')) && al.includes('doxycycline')) points += 25;
+            // Contagion herpès
+            if (ql.includes('contagi') || ql.includes('embrass')) {
+                if (al.includes('embrass') || al.includes('copain') || al.includes('contagi')) points += 20;
+            }
+            // Fréquence récidives
+            if (ql.includes('fréquen') || ql.includes('combien de fois') || ql.includes('récidiv')) {
+                if (al.includes('fois') || al.includes('an') || al.includes('récidiv')) points += 15;
+            }
+            // Dépendance / sevrage
+            if (ql.includes('depuis') && (ql.includes('combien') || ql.includes('quand') || ql.includes('longtemps'))) {
+                if (al.includes('15 ans') || al.includes('35 ans') || al.includes('2 jours') || al.includes('3 mois')) points += 15;
+            }
+            // Literie / environnement poux
+            if (ql.includes('liter') || ql.includes('doudou') || ql.includes('drap') || ql.includes('parent')) {
+                if (al.includes('liter') || al.includes('doudou') || al.includes('parent') || al.includes('lavé')) points += 20;
+            }
+            // Cortisone / observance
+            if (ql.includes('cortisone') || ql.includes('crème prescrit') || ql.includes('appliqu')) {
+                if (al.includes('peur') || al.includes('pas appliqu') || al.includes('naturel') || al.includes('cortisone')) points += 20;
+            }
+            // Maltraitance
+            if (ql.includes('bleu') || ql.includes('chute') || ql.includes('escalier') || ql.includes('déjà arrivé')) {
+                if (al.includes('3ème fois') || al.includes('tombé') || al.includes('strict') || al.includes('beau-père')) points += 25;
+            }
+            // Désescalade
+            if (ql.includes('comprend') || ql.includes('solution') || ql.includes('aide') || ql.includes('calme')) points += 10;
+
+            if (points > 0) {
+                score += points;
+                document.getElementById('scoreValue').textContent = score;
+                document.getElementById('scoreBar').style.width = Math.min(score, 100) + '%';
+            }
         }
 
         function endSimulation() {
-            let feedback = score >= 60 ? "🏆 Excellent travail !" : score >= 30 ? "👍 Bon travail, quelques points à améliorer." : "⚠️ Plusieurs éléments importants manqués.";
+            let feedback = score >= 80 ? "🏆 Excellent travail ! Questionnement complet et pertinent." : score >= 50 ? "👍 Bon travail, mais quelques pistes de questionnement manquées." : score >= 25 ? "⚠️ Plusieurs éléments importants n'ont pas été explorés." : "❌ Beaucoup d'informations critiques non détectées. Reprenez le scénario !";
             addMessage('patient', `[Fin de simulation]\n\n${feedback}\n\nScore: ${score} points`);
         }
 

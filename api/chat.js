@@ -16,6 +16,65 @@ function getClient() {
 }
 
 const SCENARIOS = {
+  // ========== RISQUES CRITIQUES ==========
+  douleur_thoracique: {
+    name: "M. Durand", age: 45,
+    personality: "Pressé, minimise ses symptômes, veut juste un médicament rapide",
+    context: "Douleur thoracique qu'il attribue à un faux mouvement.",
+    prescription: [],
+    firstMessage: "Bonjour, j'ai dû me froisser un muscle hier, j'ai une douleur là dans la poitrine. Vous avez un anti-douleur costaud ?",
+    hiddenInfo: {
+      otherMeds: "Aucun traitement en cours",
+      selfMedication: "Aucune",
+      medicalHistory: "Père décédé d'infarctus à 52 ans, fumeur 1 paquet/jour",
+      allergies: "Aucune connue",
+      otherInfo: "Douleur qui irradie dans le bras gauche, essoufflement à l'effort depuis 1 semaine, refuse d'aller aux urgences"
+    }
+  },
+  femme_enceinte_medicaments: {
+    name: "Mme Laurent", age: 29,
+    personality: "Inquiète, premier trimestre, nausées",
+    context: "Veut quelque chose contre les nausées et un antidouleur.",
+    prescription: [],
+    firstMessage: "Bonjour, je suis enceinte de 2 mois et j'ai des nausées horribles... et aussi des maux de tête. Qu'est-ce que je peux prendre ?",
+    hiddenInfo: {
+      otherMeds: "Acide folique",
+      selfMedication: "A pris de l'ibuprofène hier sans savoir que c'était contre-indiqué",
+      medicalHistory: "Premier trimestre de grossesse, a vomi son comprimé ce matin",
+      allergies: "Aucune connue",
+      otherInfo: "Ne sait pas que beaucoup de médicaments sont interdits pendant la grossesse"
+    }
+  },
+  personne_agee_polymediquee: {
+    name: "Mme Mercier", age: 82,
+    personality: "Confuse, parle de ses petits-enfants, oublie ses questions",
+    context: "Vient avec un sac de médicaments, ne sait plus ce qu'elle prend.",
+    prescription: [],
+    firstMessage: "Bonjour mon petit... Je viens chercher mes médicaments mais je ne sais plus lesquels... J'ai mon sac là, vous pouvez regarder ?",
+    hiddenInfo: {
+      otherMeds: "Prend 12 médicaments différents, confond les boîtes",
+      selfMedication: "Prend du Lexomil en plus sans prescription pour dormir",
+      medicalHistory: "A chuté 2 fois le mois dernier, vit seule, mange très peu",
+      allergies: "Ne s'en souvient plus",
+      otherInfo: "Dort mal, confusion fréquente, isolement social"
+    }
+  },
+  intoxication_enfant: {
+    name: "Mme Girard", age: 30,
+    personality: "Paniquée, parle très vite",
+    context: "Sa fille Léa (2 ans) a avalé des médicaments.",
+    prescription: [],
+    firstMessage: "Aidez-moi ! Ma fille a avalé des cachets, je ne sais pas combien ! Qu'est-ce que je fais ?!",
+    hiddenInfo: {
+      otherMeds: "Aucun",
+      selfMedication: "Aucune",
+      medicalHistory: "C'était du Doliprane 1000mg, elle pense que Léa en a pris 3 ou 4, il y a 30 minutes",
+      allergies: "Aucune connue",
+      otherInfo: "Léa pèse 12kg, semble normale pour l'instant, la mère a jeté la boîte"
+    }
+  },
+
+  // ========== CONSEIL SPÉCIALISÉ ==========
   mme_dubois: {
     name: "Mme Dubois", age: 58,
     personality: "Pressée mais coopérative, un peu distraite",
@@ -44,38 +103,10 @@ const SCENARIOS = {
       symptoms: "Difficultés d'endormissement, anxiété, palpitations"
     }
   },
-  pediatrie: {
-    name: "M. Petit", age: 35,
-    personality: "Père inquiet, premier enfant",
-    context: "Son fils Lucas (3 ans) a de la fièvre depuis hier.",
-    prescription: [],
-    firstMessage: "Bonjour, mon fils Lucas a de la fièvre depuis hier soir, il a 3 ans. Vous avez quelque chose pour faire baisser la température ? Je suis un peu inquiet...",
-    hiddenInfo: {
-      childSymptoms: "Fièvre 38.7°C, grognon mais mange un peu, nez qui coule",
-      selfMedication: "A donné un demi-Doliprane hier soir (dosage incertain)",
-      medicalHistory: "Convulsion fébrile il y a 6 mois, hospitalisé une nuit",
-      allergies: "Aucune connue",
-      otherInfo: "Lucas va à la crèche, vaccins à jour"
-    }
-  },
-  dermato: {
-    name: "Emma", age: 16,
-    personality: "Timide, gênée par son acné",
-    context: "Adolescente qui demande conseil pour son acné.",
-    prescription: [],
-    firstMessage: "Euh... bonjour. Je voulais savoir si vous aviez quelque chose pour... enfin, pour l'acné ? J'en ai vraiment marre là...",
-    hiddenInfo: {
-      currentTreatment: "Crème achetée sur internet (composition inconnue)",
-      selfMedication: "Dentifrice sur les boutons (vu sur TikTok), peau très irritée",
-      medicalHistory: "Cycles irréguliers",
-      allergies: "Peau sensible, rougit au soleil",
-      lifestyle: "Stress examens, dort mal, fast-food, manque d'eau"
-    }
-  },
-  phytotherapie: {
+  phytotherapie_prostate: {
     name: "M. Bernard", age: 62,
-    personality: "Méfiant envers les médicaments, préfère le naturel",
-    context: "Veut des plantes pour sa prostate (levers nocturnes fréquents).",
+    personality: "Méfiant envers les médicaments chimiques",
+    context: "Problèmes urinaires, levers nocturnes fréquents.",
     prescription: [],
     firstMessage: "Bonjour, je voudrais quelque chose de naturel pour... enfin, je me lève 4-5 fois par nuit pour uriner. On m'a parlé de plantes ?",
     hiddenInfo: {
@@ -83,23 +114,225 @@ const SCENARIOS = {
       selfMedication: "Tamsulosine prescrite mais arrêtée de lui-même à cause des effets secondaires",
       medicalHistory: "PSA jamais contrôlé depuis 3 ans",
       allergies: "Aucune connue",
-      otherInfo: "Ne fait plus confiance aux médicaments classiques, préfère les solutions naturelles"
+      otherInfo: "Parfois du sang dans les urines mais pense que c'est les hémorroïdes"
     }
   },
-  micronutrition: {
+  micronutrition_fatigue: {
     name: "Mme Faure", age: 35,
-    personality: "Épuisée, jeune maman, cherche de l'énergie",
+    personality: "Épuisée, cernes, jeune maman",
     context: "Fatigue intense, veut des vitamines.",
     prescription: [],
     firstMessage: "Bonjour, je suis épuisée en ce moment... J'ai besoin de vitamines ou quelque chose pour retrouver de l'énergie, j'en peux plus.",
     hiddenInfo: {
       otherMeds: "Aucun traitement en cours",
       selfMedication: "Aucune",
-      medicalHistory: "Allaite encore son bébé de 4 mois, régime végétarien strict",
+      medicalHistory: "Régime végétarien strict depuis 5 ans",
       allergies: "Aucune connue",
-      otherInfo: "Pertes de cheveux importantes, règles très abondantes depuis l'accouchement"
+      otherInfo: "Allaite son bébé de 4 mois, pertes de cheveux importantes, règles très abondantes depuis l'accouchement"
     }
   },
+  menopause: {
+    name: "Mme Blanchard", age: 52,
+    personality: "Gênée, bouffées de chaleur visibles",
+    context: "Symptômes ménopause, refuse le THS.",
+    prescription: [],
+    firstMessage: "Bonjour... C'est un peu gênant mais j'ai des bouffées de chaleur terribles, je suis trempée la nuit. Mon médecin veut me donner des hormones mais j'ai peur, vous avez autre chose ?",
+    hiddenInfo: {
+      otherMeds: "Compléments à base de soja achetés en supermarché",
+      selfMedication: "Soja en automédication",
+      medicalHistory: "Mère a eu un cancer du sein (d'où la peur du THS)",
+      allergies: "Aucune connue",
+      otherInfo: "Irritabilité importante, tensions conjugales, dort 3-4h par nuit"
+    }
+  },
+  detox_drainage: {
+    name: "Mme Petit", age: 28,
+    personality: "Influencée réseaux sociaux, vocabulaire wellness",
+    context: "Veut une cure détox après les fêtes.",
+    prescription: [],
+    firstMessage: "Bonjour ! Je voudrais faire une détox pour éliminer les toxines, j'ai vu sur Instagram une cure de jus, vous avez ça ? Il faut que je purifie mon foie.",
+    hiddenInfo: {
+      otherMeds: "Aucun",
+      selfMedication: "Prend des laxatifs naturels tous les jours",
+      medicalHistory: "Fait régulièrement des jeûnes de 3 jours, a perdu 8kg en 2 mois avec des méthodes yo-yo",
+      allergies: "Aucune connue",
+      otherInfo: "Cheveux et ongles cassants, obsédée par son poids, possible trouble du comportement alimentaire"
+    }
+  },
+  sport_recuperation: {
+    name: "Thomas", age: 32,
+    personality: "Sportif amateur motivé, veut performer",
+    context: "Prépare un marathon, courbatures.",
+    prescription: [],
+    firstMessage: "Salut ! Je prépare mon premier marathon et j'ai des courbatures de fou. Vous avez des trucs pour mieux récupérer ? Et pour améliorer mes performances aussi ?",
+    hiddenInfo: {
+      otherMeds: "Protéines en poudre achetées sur internet",
+      selfMedication: "Protéines en poudre de composition douteuse",
+      medicalHistory: "Crampes importantes récemment",
+      allergies: "Aucune connue",
+      otherInfo: "Boit très peu d'eau pendant l'effort, court 60km/semaine depuis seulement 2 mois (avant sédentaire), intéressé par la créatine"
+    }
+  },
+
+  // ========== POPULATIONS SPÉCIFIQUES ==========
+  pediatrie: {
+    name: "M. Petit", age: 35,
+    personality: "Père inquiet, premier enfant",
+    context: "Son fils Lucas (3 ans) a de la fièvre depuis hier.",
+    prescription: [],
+    firstMessage: "Bonjour, mon fils Lucas a de la fièvre depuis hier soir, il a 3 ans. Vous avez quelque chose pour faire baisser la température ? Je suis un peu inquiet...",
+    hiddenInfo: {
+      otherMeds: "Aucun",
+      selfMedication: "A donné un demi-Doliprane hier soir (dosage incertain)",
+      medicalHistory: "Convulsion fébrile il y a 6 mois, hospitalisé une nuit",
+      allergies: "Aucune connue",
+      childSymptoms: "Fièvre 38.7°C, grognon mais mange un peu, nez qui coule, va à la crèche, vaccins à jour"
+    }
+  },
+  bebe_coliques: {
+    name: "Mme Dupont", age: 30,
+    personality: "Épuisée, perdue, premier bébé",
+    context: "Bébé Noah (3 semaines) pleure beaucoup, suspicion coliques.",
+    prescription: [],
+    firstMessage: "Bonjour... Notre bébé pleure tout le temps, surtout le soir, il se tortille, on n'en peut plus. On dort plus depuis 3 semaines. C'est des coliques ?",
+    hiddenInfo: {
+      otherMeds: "Aucun",
+      selfMedication: "Ont déjà essayé 3 laits différents sur conseils de la famille",
+      medicalHistory: "La maman allaite mais boit beaucoup de lait de vache, le bébé régurgite beaucoup",
+      allergies: "Aucune connue",
+      otherInfo: "N'ont pas vu le pédiatre depuis la sortie de maternité, la maman pleure souvent (possible baby blues)"
+    }
+  },
+  personne_agee_isolee: {
+    name: "M. Martin", age: 78,
+    personality: "Fier, refuse l'aide, vient régulièrement discuter",
+    context: "Vient renouveler son ordonnance, semble confus.",
+    prescription: [],
+    firstMessage: "Bonjour ! Comment allez-vous ? Ah la la, quel temps aujourd'hui... Euh... Je venais pour... Attendez, je l'ai noté quelque part...",
+    hiddenInfo: {
+      otherMeds: "Ne s'en souvient plus, oublie de prendre ses médicaments",
+      selfMedication: "Aucune",
+      medicalHistory: "Sa femme est décédée il y a 6 mois, ses enfants habitent loin",
+      allergies: "Ne s'en souvient plus",
+      otherInfo: "Mange essentiellement des conserves, a failli provoquer un incendie (casserole oubliée), refuse l'aide à domicile"
+    }
+  },
+  femme_enceinte_rhume: {
+    name: "Mme Chen", age: 34,
+    personality: "Enrhumée, 1er trimestre, inquiète",
+    context: "Rhume, mal de gorge, enceinte de 10 semaines.",
+    prescription: [],
+    firstMessage: "Bonjour, je suis enceinte de 10 semaines et j'ai attrapé un gros rhume... J'ai le nez bouché, mal à la gorge, un peu de fièvre. Je peux prendre quoi ? Je n'ose toucher à rien.",
+    hiddenInfo: {
+      otherMeds: "Acide folique et vitamines prénatales",
+      selfMedication: "A pris du miel avec de l'alcool (grog conseillé par sa mère)",
+      medicalHistory: "Fièvre à 38.5°C depuis hier, tousse beaucoup la nuit",
+      allergies: "Aucune connue",
+      otherInfo: "Travaille en crèche, n'a pas appelé sa sage-femme car pense que c'est juste un rhume"
+    }
+  },
+  patient_diabetique: {
+    name: "M. Koné", age: 58,
+    personality: "Diabétique mal équilibré, aime le sucré",
+    context: "Demande un sirop pour la toux.",
+    prescription: [],
+    firstMessage: "Bonjour, j'ai une toux grasse qui m'embête depuis une semaine. Vous me donnez un bon sirop ? Le plus efficace que vous avez.",
+    hiddenInfo: {
+      otherMeds: "Metformine pour diabète type 2",
+      selfMedication: "A déjà pris un sirop sucré la semaine dernière",
+      medicalHistory: "HbA1c à 9% au dernier contrôle, ne suit pas son régime",
+      allergies: "Aucune connue",
+      otherInfo: "Pieds qui picotent parfois mais ne l'a jamais dit au médecin"
+    }
+  },
+
+  // ========== DERMATOLOGIE COMPTOIR ==========
+  dermato: {
+    name: "Emma", age: 16,
+    personality: "Timide, gênée par son acné",
+    context: "Adolescente qui demande conseil pour son acné.",
+    prescription: [],
+    firstMessage: "Euh... bonjour. Je voulais savoir si vous aviez quelque chose pour... enfin, pour l'acné ? J'en ai vraiment marre là...",
+    hiddenInfo: {
+      otherMeds: "Aucun",
+      selfMedication: "Dentifrice sur les boutons (vu sur TikTok), peau très irritée",
+      medicalHistory: "Cycles irréguliers",
+      allergies: "Peau sensible, rougit au soleil",
+      currentTreatment: "Crème achetée sur internet (composition inconnue)"
+    }
+  },
+  eczema_bebe: {
+    name: "Mme Dubois-Morel", age: 32,
+    personality: "Inquiète, a lu beaucoup sur internet, corticophobie",
+    context: "Bébé Emma (8 mois) avec plaques rouges qui gratte.",
+    prescription: [],
+    firstMessage: "Bonjour, ma fille a des plaques rouges sur les joues et dans les plis, elle se gratte beaucoup. Le médecin a prescrit de la cortisone mais j'ai peur, c'est dangereux non ?",
+    hiddenInfo: {
+      otherMeds: "Dermocorticoïde prescrit mais non appliqué par peur",
+      selfMedication: "Utilise plein de crèmes naturelles à la place de la prescription",
+      medicalHistory: "Le papa a de l'asthme (terrain atopique familial), Emma dort mal",
+      allergies: "Terrain atopique familial",
+      otherInfo: "A essayé un lait végétal sans avis médical"
+    }
+  },
+  mycose_pied: {
+    name: "M. Fernandez", age: 42,
+    personality: "Gêné, sportif, va à la piscine",
+    context: "Démangeaisons entre les orteils.",
+    prescription: [],
+    firstMessage: "Euh bonjour... C'est un peu gênant mais j'ai des démangeaisons entre les orteils, c'est tout rouge et ça pèle. C'est quoi ? Une mycose ?",
+    hiddenInfo: {
+      otherMeds: "Metformine (diabétique type 2)",
+      selfMedication: "A utilisé une crème antifongique mais seulement 3 jours",
+      medicalHistory: "Diabétique (ne fait pas le lien avec les mycoses), symptômes depuis 3 mois",
+      allergies: "Aucune connue",
+      otherInfo: "Va à la piscine 3x/semaine, porte les mêmes chaussures de sport sans chaussettes parfois"
+    }
+  },
+  poux: {
+    name: "Mme Martinez", age: 38,
+    personality: "Débordée, 3 enfants, épuisée par la situation",
+    context: "Poux récidivants chez ses enfants.",
+    prescription: [],
+    firstMessage: "Bonjour, j'en peux plus des poux ! J'ai traité mes enfants la semaine dernière et ça recommence. Donnez-moi le truc le plus fort que vous avez, j'en ai marre !",
+    hiddenInfo: {
+      otherMeds: "Aucun",
+      selfMedication: "A utilisé un produit anti-poux périmé trouvé dans le placard, plus mayonnaise et vinaigre",
+      medicalHistory: "N'a traité que les enfants, pas vérifié les parents",
+      allergies: "Aucune connue",
+      otherInfo: "N'a pas lavé la literie ni les doudous, l'école est infestée"
+    }
+  },
+  coup_de_soleil: {
+    name: "Lucas", age: 22,
+    personality: "Étudiant, a fait la fête sur la plage",
+    context: "Coup de soleil sévère.",
+    prescription: [],
+    firstMessage: "Aïe aïe aïe... J'ai pris un méga coup de soleil hier à la plage. J'ai super mal, c'est tout rouge. Vous avez une crème miracle ?",
+    hiddenInfo: {
+      otherMeds: "Doxycycline pour l'acné (photosensibilisant)",
+      selfMedication: "Aucune crème solaire utilisée",
+      medicalHistory: "Coup de soleil 2ème degré avec cloques, a bu de l'alcool toute la journée au soleil",
+      allergies: "Aucune connue",
+      otherInfo: "Grains de beauté nombreux non surveillés, ne savait pas que son antibiotique est photosensibilisant"
+    }
+  },
+  herpes_labial: {
+    name: "Julie", age: 27,
+    personality: "Stressée, a un rendez-vous important demain",
+    context: "Bouton de fièvre récidivant.",
+    prescription: [],
+    firstMessage: "Bonjour, j'ai ENCORE un bouton de fièvre qui arrive, je sens le picotement là ! J'ai un entretien d'embauche demain, il me faut un truc qui marche vraiment vite !",
+    hiddenInfo: {
+      otherMeds: "Aucun traitement en cours",
+      selfMedication: "Utilise toujours les mêmes crèmes mais trop tard",
+      medicalHistory: "Herpès récidivant 5-6 fois par an, n'a jamais consulté pour ça",
+      allergies: "Aucune connue",
+      otherInfo: "Très stressée (facteur déclenchant), embrasse son copain même pendant les poussées"
+    }
+  },
+
+  // ========== SITUATIONS DÉLICATES ==========
   veterinaire: {
     name: "Mme Rossi", age: 55,
     personality: "Très attachée à son animal, le considère comme son enfant",
@@ -114,18 +347,88 @@ const SCENARIOS = {
       otherInfo: "Le chat a aussi perdu du poids ces dernières semaines"
     }
   },
-  urgence: {
-    name: "M. Durand", age: 45,
-    personality: "Pressé, minimise ses symptômes, veut juste un médicament rapide",
-    context: "Douleur thoracique qu'il attribue à un faux mouvement.",
+  contraception_urgence: {
+    name: "Claire", age: 19,
+    personality: "Stressée, gênée, parle à voix basse",
+    context: "Rapport non protégé.",
     prescription: [],
-    firstMessage: "Bonjour, j'ai dû me froisser un muscle hier, j'ai une douleur là dans la poitrine. Vous avez un anti-douleur costaud ?",
+    firstMessage: "Bonjour... Euh... Je voudrais... la pilule du lendemain, s'il vous plaît.",
     hiddenInfo: {
-      otherMeds: "Aucun traitement en cours",
+      otherMeds: "Pilule contraceptive classique (oubli de 2 comprimés)",
       selfMedication: "Aucune",
-      medicalHistory: "Père décédé d'infarctus à 52 ans, fumeur 1 paquet/jour",
+      medicalHistory: "C'est la 3ème fois cette année, rapport il y a 36 heures",
       allergies: "Aucune connue",
-      otherInfo: "Douleur qui irradie dans le bras gauche, essoufflement à l'effort depuis 1 semaine, ne veut pas aller aux urgences"
+      otherInfo: "Ne sait pas où elle en est dans son cycle, son copain refuse le préservatif, pas de suivi gynéco"
+    }
+  },
+  test_grossesse_positif: {
+    name: "Inès", age: 23,
+    personality: "En pleurs, perdue",
+    context: "Vient de faire un test de grossesse positif.",
+    prescription: [],
+    firstMessage: "(En larmes) Excusez-moi... Je viens d'acheter un test chez vous... Il est positif... Je... Je sais pas quoi faire...",
+    hiddenInfo: {
+      otherMeds: "Aucun",
+      selfMedication: "Aucune",
+      medicalHistory: "Étudiante, en couple récent, pas prête pour un enfant",
+      allergies: "Aucune connue",
+      otherInfo: "Ne connaît pas les options, a peur de la réaction de ses parents, ne sait pas vers qui se tourner"
+    }
+  },
+  sevrage_tabac: {
+    name: "M. Leroy", age: 55,
+    personality: "Fumeur depuis 35 ans, veut arrêter mais pas convaincu",
+    context: "Son médecin lui a dit d'arrêter de fumer.",
+    prescription: [],
+    firstMessage: "Bonjour, mon médecin me harcèle pour que j'arrête de fumer. Bon, je veux bien essayer mais je vous préviens, j'ai déjà essayé 10 fois et ça marche jamais. Vous avez quoi ?",
+    hiddenInfo: {
+      otherMeds: "Traitement pour BPCO",
+      selfMedication: "A essayé les patchs mais mal dosés",
+      medicalHistory: "2 paquets par jour, BPCO diagnostiquée, première cigarette dans les 5 min après le réveil",
+      allergies: "Aucune connue",
+      otherInfo: "Sa femme fume aussi, a peur de grossir, dépendance très forte"
+    }
+  },
+  dependance_benzodiazepines: {
+    name: "Mme Roux", age: 65,
+    personality: "Anxieuse, suppliante, cliente fidèle",
+    context: "Veut son Lexomil sans ordonnance.",
+    prescription: [],
+    firstMessage: "Bonjour, vous me connaissez, je viens toujours ici. Le médecin ne peut pas me voir avant 2 semaines et je n'ai plus de Lexomil. Vous pouvez me dépanner ? Juste une boîte ?",
+    hiddenInfo: {
+      otherMeds: "Lexomil depuis 15 ans (doses augmentées seule) + Stilnox le soir",
+      selfMedication: "A augmenté les doses de Lexomil toute seule",
+      medicalHistory: "Son médecin veut diminuer mais elle refuse, a déjà demandé dans d'autres pharmacies",
+      allergies: "Aucune connue",
+      otherInfo: "Tremble légèrement, risque de sevrage brutal si arrêt"
+    }
+  },
+  patient_agressif: {
+    name: "M. Sanchez", age: 40,
+    personality: "En colère, agressif, impatient",
+    context: "Son médicament antidépresseur est en rupture.",
+    prescription: [],
+    firstMessage: "C'est QUOI ce bordel ?! La semaine dernière vous m'avez dit que mon médicament serait là aujourd'hui et il y est toujours pas ! Vous vous foutez de moi ?!",
+    hiddenInfo: {
+      otherMeds: "Traitement antidépresseur en rupture nationale",
+      selfMedication: "Aucune",
+      medicalHistory: "N'a plus de comprimés depuis 2 jours, syndrome de sevrage (irritabilité, vertiges)",
+      allergies: "Aucune connue",
+      otherInfo: "Problèmes financiers, vient de perdre son emploi"
+    }
+  },
+  suspicion_maltraitance: {
+    name: "Mère de Timéo", age: 35,
+    personality: "Répond vite, ne laisse pas l'enfant parler",
+    context: "Enfant Timéo (7 ans) avec des bleus.",
+    prescription: [],
+    firstMessage: "Bonjour, mon fils est tombé dans les escaliers, il a des bleus. Vous avez de l'arnica ?",
+    hiddenInfo: {
+      otherMeds: "Aucun",
+      selfMedication: "Aucune",
+      medicalHistory: "C'est la 3ème fois en 2 mois qu'ils viennent pour des chutes, le beau-père est très strict",
+      allergies: "Aucune connue",
+      otherInfo: "Bleus sur les bras à différents stades, l'enfant ne parle pas et semble effrayé, la mère répond à sa place"
     }
   }
 };
@@ -133,7 +436,7 @@ const SCENARIOS = {
 function generateSystemPrompt(scenarioId) {
   const s = SCENARIOS[scenarioId];
   if (!s) return null;
-  
+
   return `Tu es ${s.name}, ${s.age} ans. Tu es un VRAI patient dans une pharmacie. Tu parles comme une personne ordinaire, pas comme un professionnel de santé.
 
 PERSONNALITÉ: ${s.personality}
@@ -163,7 +466,7 @@ export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  
+
   if (req.method === 'OPTIONS') return res.status(200).end();
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
