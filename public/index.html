@@ -98,6 +98,26 @@
                     <h3>Emma</h3>
                     <p>16 ans • Acné. A utilisé des produits internet dangereux.</p>
                 </div>
+                <div class="scenario-card" onclick="selectScenario('phytotherapie')">
+                    <div class="avatar" style="background:linear-gradient(135deg,#22c55e,#16a34a);">🌱</div>
+                    <h3>M. Bernard</h3>
+                    <p>62 ans • Problèmes prostate, veut du naturel. Traitement arrêté en cachette.</p>
+                </div>
+                <div class="scenario-card" onclick="selectScenario('micronutrition')">
+                    <div class="avatar" style="background:linear-gradient(135deg,#fb923c,#f97316);">🥗</div>
+                    <h3>Mme Faure</h3>
+                    <p>35 ans • Fatigue intense, jeune maman. Carences cachées à détecter.</p>
+                </div>
+                <div class="scenario-card" onclick="selectScenario('veterinaire')">
+                    <div class="avatar" style="background:linear-gradient(135deg,#a78bfa,#7c3aed);">🐱</div>
+                    <h3>Mme Rossi</h3>
+                    <p>55 ans • Chat malade. Automédication humaine dangereuse sur l'animal.</p>
+                </div>
+                <div class="scenario-card" onclick="selectScenario('urgence')">
+                    <div class="avatar" style="background:linear-gradient(135deg,#ef4444,#dc2626);">⚠️</div>
+                    <h3>M. Durand</h3>
+                    <p>45 ans • Douleur thoracique. Signes d'alerte cardiaque à repérer !</p>
+                </div>
             </div>
         </div>
         <div id="gameContainer" class="game-container">
@@ -134,7 +154,11 @@
             mme_dubois: { name: "Mme Dubois", age: 58, avatar: "👩‍🦳", info: "Pressée mais coopérative", suggestions: ["Autres médicaments ?", "Pris quelque chose ce matin ?", "Antécédents ?", "Décrivez la douleur"] },
             aromatherapie: { name: "Mme Martin", age: 42, avatar: "🌿", info: "Anxieuse, cherche du naturel", suggestions: ["Prenez-vous des médicaments ?", "Utilisez déjà des HE ?", "Antécédents respiratoires ?", "Allergies cutanées ?"] },
             pediatrie: { name: "M. Petit", age: 35, avatar: "👶", info: "Père inquiet", suggestions: ["Quelle température ?", "Déjà donné quelque chose ?", "Antécédents de Lucas ?", "Combien pèse-t-il ?"] },
-            dermato: { name: "Emma", age: 16, avatar: "💆", info: "Timide, gênée", suggestions: ["Produits utilisés ?", "Type de peau ?", "Routine actuelle ?", "Depuis combien de temps ?"] }
+            dermato: { name: "Emma", age: 16, avatar: "💆", info: "Timide, gênée", suggestions: ["Produits utilisés ?", "Type de peau ?", "Routine actuelle ?", "Depuis combien de temps ?"] },
+            phytotherapie: { name: "M. Bernard", age: 62, avatar: "🌱", info: "Méfiant, préfère le naturel", suggestions: ["Autres médicaments ?", "Traitement prescrit ?", "Suivi urologique ?", "Depuis quand ces symptômes ?"] },
+            micronutrition: { name: "Mme Faure", age: 35, avatar: "🥗", info: "Épuisée, jeune maman", suggestions: ["Vous allaitez ?", "Régime alimentaire ?", "Autres symptômes ?", "Règles normales ?"] },
+            veterinaire: { name: "Mme Rossi", age: 55, avatar: "🐱", info: "Propriétaire inquiète", suggestions: ["Donné quelque chose au chat ?", "Vu le vétérinaire ?", "Autres symptômes ?", "Depuis combien de temps ?"] },
+            urgence: { name: "M. Durand", age: 45, avatar: "⚠️", info: "Pressé, minimise", suggestions: ["Où exactement la douleur ?", "Irradiation ?", "Essoufflement ?", "Antécédents familiaux ?"] }
         };
         let currentScenario = null, messages = [], score = 0, isTyping = false;
 
@@ -207,15 +231,34 @@
         function updateScore(q, a) {
             const ql = q.toLowerCase(), al = a.toLowerCase();
             if ((ql.includes('autre') && ql.includes('médicament')) || ql.includes('traitement')) {
-                if (al.includes('kardégic') || al.includes('lexomil') || al.includes('cardiologue')) score += 25;
+                if (al.includes('kardégic') || al.includes('lexomil') || al.includes('cardiologue') || al.includes('tamsulosine') || al.includes('arrêté')) score += 25;
             }
             if (ql.includes('pris') || ql.includes('donné') || ql.includes('automédication')) {
-                if (al.includes('advil') || al.includes('doliprane') || al.includes('internet') || al.includes('tiktok')) score += 20;
+                if (al.includes('advil') || al.includes('doliprane') || al.includes('internet') || al.includes('tiktok') || al.includes('écrasé') || al.includes('pâtée')) score += 20;
             }
-            if (ql.includes('antécédent') || ql.includes('passé')) {
-                if (al.includes('ulcère') || al.includes('asthme') || al.includes('convulsion')) score += 20;
+            if (ql.includes('antécédent') || ql.includes('passé') || ql.includes('famil')) {
+                if (al.includes('ulcère') || al.includes('asthme') || al.includes('convulsion') || al.includes('infarctus') || al.includes('père') || al.includes('décédé')) score += 20;
             }
             if (ql.includes('allergie')) score += 10;
+            if (ql.includes('allait') || ql.includes('bébé') || ql.includes('nourri')) {
+                if (al.includes('allait') || al.includes('bébé') || al.includes('4 mois')) score += 25;
+            }
+            if (ql.includes('régime') || ql.includes('alimenta') || ql.includes('mange')) {
+                if (al.includes('végétari') || al.includes('viande')) score += 20;
+            }
+            if (ql.includes('règle') || ql.includes('cheveu') || ql.includes('perte')) {
+                if (al.includes('règle') || al.includes('abondant') || al.includes('cheveu')) score += 20;
+            }
+            if ((ql.includes('irrad') || ql.includes('bras')) && al.includes('bras')) score += 25;
+            if (ql.includes('essouffle') && (al.includes('essouffle') || al.includes('souffle'))) score += 20;
+            if (ql.includes('fum') && (al.includes('fum') || al.includes('paquet'))) score += 15;
+            if (ql.includes('vétérinaire') || ql.includes('véto')) {
+                if (al.includes('véto') || al.includes('2 ans') || al.includes('pas vu')) score += 20;
+            }
+            if (ql.includes('psa') || ql.includes('prostate') && ql.includes('contrôl')) {
+                if (al.includes('psa') || al.includes('contrôl') || al.includes('3 ans')) score += 25;
+            }
+            if (ql.includes('urgence') || ql.includes('hôpital') || ql.includes('15') || ql.includes('samu')) score += 25;
             document.getElementById('scoreValue').textContent = score;
             document.getElementById('scoreBar').style.width = Math.min(score, 100) + '%';
         }

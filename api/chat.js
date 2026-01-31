@@ -71,6 +71,62 @@ const SCENARIOS = {
       allergies: "Peau sensible, rougit au soleil",
       lifestyle: "Stress examens, dort mal, fast-food, manque d'eau"
     }
+  },
+  phytotherapie: {
+    name: "M. Bernard", age: 62,
+    personality: "Méfiant envers les médicaments, préfère le naturel",
+    context: "Veut des plantes pour sa prostate (levers nocturnes fréquents).",
+    prescription: [],
+    firstMessage: "Bonjour, je voudrais quelque chose de naturel pour... enfin, je me lève 4-5 fois par nuit pour uriner. On m'a parlé de plantes ?",
+    hiddenInfo: {
+      otherMeds: "Kardégic 160mg prescrit par le cardiologue",
+      selfMedication: "Tamsulosine prescrite mais arrêtée de lui-même à cause des effets secondaires",
+      medicalHistory: "PSA jamais contrôlé depuis 3 ans",
+      allergies: "Aucune connue",
+      otherInfo: "Ne fait plus confiance aux médicaments classiques, préfère les solutions naturelles"
+    }
+  },
+  micronutrition: {
+    name: "Mme Faure", age: 35,
+    personality: "Épuisée, jeune maman, cherche de l'énergie",
+    context: "Fatigue intense, veut des vitamines.",
+    prescription: [],
+    firstMessage: "Bonjour, je suis épuisée en ce moment... J'ai besoin de vitamines ou quelque chose pour retrouver de l'énergie, j'en peux plus.",
+    hiddenInfo: {
+      otherMeds: "Aucun traitement en cours",
+      selfMedication: "Aucune",
+      medicalHistory: "Allaite encore son bébé de 4 mois, régime végétarien strict",
+      allergies: "Aucune connue",
+      otherInfo: "Pertes de cheveux importantes, règles très abondantes depuis l'accouchement"
+    }
+  },
+  veterinaire: {
+    name: "Mme Rossi", age: 55,
+    personality: "Très attachée à son animal, le considère comme son enfant",
+    context: "Son chat de 12 ans a des problèmes.",
+    prescription: [],
+    firstMessage: "Bonjour, c'est pour mon chat Minou... Il vomit souvent et ne mange plus trop depuis quelques jours. Vous avez quelque chose ?",
+    hiddenInfo: {
+      otherMeds: "Aucun traitement vétérinaire en cours",
+      selfMedication: "Donne un anti-inflammatoire humain au chat (Advil écrasé dans la pâtée)",
+      medicalHistory: "Chat non vu par un vétérinaire depuis 2 ans",
+      allergies: "Aucune connue",
+      otherInfo: "Le chat a aussi perdu du poids ces dernières semaines"
+    }
+  },
+  urgence: {
+    name: "M. Durand", age: 45,
+    personality: "Pressé, minimise ses symptômes, veut juste un médicament rapide",
+    context: "Douleur thoracique qu'il attribue à un faux mouvement.",
+    prescription: [],
+    firstMessage: "Bonjour, j'ai dû me froisser un muscle hier, j'ai une douleur là dans la poitrine. Vous avez un anti-douleur costaud ?",
+    hiddenInfo: {
+      otherMeds: "Aucun traitement en cours",
+      selfMedication: "Aucune",
+      medicalHistory: "Père décédé d'infarctus à 52 ans, fumeur 1 paquet/jour",
+      allergies: "Aucune connue",
+      otherInfo: "Douleur qui irradie dans le bras gauche, essoufflement à l'effort depuis 1 semaine, ne veut pas aller aux urgences"
+    }
   }
 };
 
