@@ -1,8 +1,9 @@
 {
   "name": "pharmasim",
   "version": "1.0.0",
+  "type": "module",
   "description": "PharmaSim - Simulateur de Patients IA pour Pharmaciens",
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.30.0"
+    "@anthropic-ai/sdk": "^0.39.0"
   }
 }

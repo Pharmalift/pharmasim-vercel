@@ -1,6 +1,19 @@
 import Anthropic from '@anthropic-ai/sdk';
 
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+console.log('[PharmaSim] Module loaded');
+
+let client = null;
+
+function getClient() {
+  if (!client) {
+    if (!process.env.ANTHROPIC_API_KEY) {
+      throw new Error('ANTHROPIC_API_KEY is not set in environment variables');
+    }
+    client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+    console.log('[PharmaSim] Anthropic client initialized');
+  }
+  return client;
+}
 
 const SCENARIOS = {
   mme_dubois: {
@@ -100,11 +113,17 @@ export default async function handler(req, res) {
 
   try {
     const { scenarioId, messages, userMessage } = req.body;
+    console.log('[PharmaSim] Request:', { scenarioId, messagesCount: messages?.length, userMessage });
+
     const scenario = SCENARIOS[scenarioId];
-    if (!scenario) return res.status(400).json({ error: 'Invalid scenario' });
+    if (!scenario) {
+      console.log('[PharmaSim] Invalid scenario:', scenarioId);
+      return res.status(400).json({ error: 'Invalid scenario' });
+    }
 
     // Premier appel : retourner directement le firstMessage sans appeler l'API
     if (!messages || messages.length === 0) {
+      console.log('[PharmaSim] First call, returning firstMessage');
       return res.status(200).json({ response: scenario.firstMessage });
     }
 
@@ -116,15 +135,19 @@ export default async function handler(req, res) {
     }));
     conversationMessages.push({ role: 'user', content: userMessage });
 
-    const response = await client.messages.create({
+    console.log('[PharmaSim] Calling Claude API with', conversationMessages.length, 'messages');
+
+    const response = await getClient().messages.create({
       model: 'claude-3-5-haiku-latest',
       max_tokens: 300,
       system: systemPrompt,
       messages: conversationMessages
     });
 
+    console.log('[PharmaSim] Claude response received');
     res.status(200).json({ response: response.content[0].text });
   } catch (error) {
+    console.error('[PharmaSim] Error:', error.message, error.stack);
     res.status(500).json({ error: error.message });
   }
 }
