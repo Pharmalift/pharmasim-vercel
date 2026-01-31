@@ -17,6 +17,8 @@
         .status-badge { padding: 8px 16px; border-radius: 20px; font-size: 12px; font-weight: 600; background: rgba(139,92,246,0.2); color: #a78bfa; }
         .category-title { font-size: 16px; margin: 32px 0 16px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.08); color: #e2e8f0; }
         .category-title:first-of-type { margin-top: 0; }
+        .section-title { font-size: 20px; font-weight: 700; margin: 40px 0 8px; padding: 12px 0; border-bottom: 2px solid rgba(255,255,255,0.15); color: #f8fafc; }
+        .section-title:first-of-type { margin-top: 0; }
         .scenario-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-bottom: 20px; }
         .scenario-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 20px; cursor: pointer; transition: all 0.3s; }
         .scenario-card:hover { background: rgba(255,255,255,0.08); border-color: #3b82f6; transform: translateY(-2px); }
@@ -79,6 +81,8 @@
         </header>
         <div id="scenarioSelection">
             <h2 style="margin-bottom:24px;">Choisissez un scénario</h2>
+
+            <h2 class="section-title">🏥 Scénarios Patients</h2>
 
             <h3 class="category-title">🔴 Risques critiques</h3>
             <div class="scenario-grid">
@@ -244,12 +248,58 @@
                     <p>Bleus récurrents. Observation et protocole signalement.</p>
                 </div>
             </div>
+
+            <h2 class="section-title">💼 Scénarios Management</h2>
+
+            <h3 class="category-title">🟤 Management & Gestion d'Officine</h3>
+            <div class="scenario-grid">
+                <div class="scenario-card" onclick="selectScenario('delegue_insistant')">
+                    <div class="avatar" style="background:linear-gradient(135deg,#78716c,#57534e);">👔</div>
+                    <h3>Marc</h3>
+                    <p>Délégué Pharma Générix • Offre agressive à analyser.</p>
+                </div>
+                <div class="scenario-card" onclick="selectScenario('conflit_equipe')">
+                    <div class="avatar" style="background:linear-gradient(135deg,#f87171,#ef4444);">😤</div>
+                    <h3>Sophie</h3>
+                    <p>Préparatrice • Conflit d'équipe. Écoute et médiation.</p>
+                </div>
+                <div class="scenario-card" onclick="selectScenario('demande_augmentation')">
+                    <div class="avatar" style="background:linear-gradient(135deg,#fbbf24,#f59e0b);">💰</div>
+                    <h3>Julie</h3>
+                    <p>Adjointe 4 ans • Demande d'augmentation. Négociation.</p>
+                </div>
+                <div class="scenario-card" onclick="selectScenario('erreur_delivrance')">
+                    <div class="avatar" style="background:linear-gradient(135deg,#fb923c,#f97316);">😰</div>
+                    <h3>Karim</h3>
+                    <p>Préparateur junior • Erreur de délivrance. Feedback constructif.</p>
+                </div>
+                <div class="scenario-card" onclick="selectScenario('client_prix_internet')">
+                    <div class="avatar" style="background:linear-gradient(135deg,#60a5fa,#3b82f6);">🛒</div>
+                    <h3>M. Morel</h3>
+                    <p>Client • Prix vs internet. Argumenter la valeur ajoutée.</p>
+                </div>
+                <div class="scenario-card" onclick="selectScenario('negociation_grossiste')">
+                    <div class="avatar" style="background:linear-gradient(135deg,#a78bfa,#7c3aed);">📊</div>
+                    <h3>François</h3>
+                    <p>Dir. régional grossiste • Négociation commerciale annuelle.</p>
+                </div>
+                <div class="scenario-card" onclick="selectScenario('recadrage_retards')">
+                    <div class="avatar" style="background:linear-gradient(135deg,#94a3b8,#64748b);">⏰</div>
+                    <h3>Thomas</h3>
+                    <p>Préparateur • Retards répétés. Recadrage bienveillant.</p>
+                </div>
+                <div class="scenario-card" onclick="selectScenario('avis_google_negatif')">
+                    <div class="avatar" style="background:linear-gradient(135deg,#fca5a5,#f87171);">⭐</div>
+                    <h3>Mme Fontaine</h3>
+                    <p>Cliente furieuse • Avis 1 étoile. Gestion e-réputation.</p>
+                </div>
+            </div>
         </div>
         <div id="gameContainer" class="game-container">
             <div class="chat-panel">
                 <div class="chat-header">
                     <div class="avatar" id="patientAvatar">👩‍🦳</div>
-                    <div><h3 id="patientName">Patient</h3><p id="patientInfo">Info</p></div>
+                    <div><p id="chatLabel" style="font-size:10px;opacity:0.7;margin-bottom:2px;">🏥 Patient</p><h3 id="patientName">Patient</h3><p id="patientInfo">Info</p></div>
                 </div>
                 <div id="messages" class="messages"></div>
                 <div class="input-area">
@@ -304,16 +354,27 @@
             sevrage_tabac: { name: "M. Leroy", age: 55, avatar: "🚬", info: "Fumeur, sceptique", suggestions: ["Combien par jour ?", "Première cigarette quand ?", "Déjà essayé quoi ?", "Problèmes respiratoires ?"] },
             dependance_benzodiazepines: { name: "Mme Roux", age: 65, avatar: "😰", info: "Anxieuse, suppliante", suggestions: ["Depuis combien de temps ?", "Doses augmentées ?", "Autres somnifères ?", "Votre médecin en pense quoi ?"] },
             patient_agressif: { name: "M. Sanchez", age: 40, avatar: "😠", info: "En colère", suggestions: ["Depuis quand sans traitement ?", "Symptômes de manque ?", "On peut chercher une solution", "Médecin joignable ?"] },
-            suspicion_maltraitance: { name: "Mère de Timéo", age: 35, avatar: "💔", info: "Répond à la place de l'enfant", suggestions: ["Comment c'est arrivé ?", "Déjà arrivé avant ?", "Timéo, tu peux me montrer ?", "D'autres bleus ?"] }
+            suspicion_maltraitance: { name: "Mère de Timéo", age: 35, avatar: "💔", info: "Répond à la place de l'enfant", suggestions: ["Comment c'est arrivé ?", "Déjà arrivé avant ?", "Timéo, tu peux me montrer ?", "D'autres bleus ?"] },
+            // Management
+            delegue_insistant: { name: "Marc", type: "management", role: "Délégué Pharma Générix", avatar: "👔", info: "Commercial, insistant", suggestions: ["Minimum de commande ?", "Historique de ruptures ?", "Marge réelle vs princeps ?", "Pourquoi cette offre maintenant ?"] },
+            conflit_equipe: { name: "Sophie", type: "management", role: "Préparatrice", avatar: "😤", info: "À cran, se sent lésée", suggestions: ["Depuis combien de temps ?", "Y a-t-il eu des changements récents ?", "Comment vous sentez-vous ?", "Une médiation avec Marie ?"] },
+            demande_augmentation: { name: "Julie", type: "management", role: "Pharmacienne adjointe (4 ans)", avatar: "💰", info: "Fidèle, argumentaire préparé", suggestions: ["Des propositions ailleurs ?", "Quelles responsabilités souhaitez-vous ?", "Quel montant envisagez-vous ?", "Comment valoriser votre poste ?"] },
+            erreur_delivrance: { name: "Karim", type: "management", role: "Préparateur junior", avatar: "😰", info: "Stressé par son erreur", suggestions: ["L'enfant a-t-il pris le médicament ?", "Première erreur ?", "Vérification par le pharmacien ?", "Comment améliorer le process ?"] },
+            client_prix_internet: { name: "M. Morel", type: "management", role: "Client occasionnel", avatar: "🛒", info: "Râleur, compare les prix", suggestions: ["C'est pour qui ce produit ?", "Vous en avez besoin maintenant ?", "Garantie et traçabilité ?", "Nos services en plus ?"] },
+            negociation_grossiste: { name: "François", type: "management", role: "Dir. régional Alliance Healthcare", avatar: "📊", info: "Professionnel, en position de force", suggestions: ["Conditions du concurrent ?", "Marge sur la livraison ?", "Autre grossiste m'a contacté", "Négocier le palier ?"] },
+            recadrage_retards: { name: "Thomas", type: "management", role: "Préparateur (3 ans)", avatar: "⏰", info: "Sympathique mais désinvolte", suggestions: ["Combien de retards ce mois ?", "Impact sur l'équipe ?", "Formaliser par écrit ?", "Solutions proposées ?"] },
+            avis_google_negatif: { name: "Mme Fontaine", type: "management", role: "Cliente (téléphone)", avatar: "⭐", info: "Furieuse, veut des excuses", suggestions: ["Que s'est-il passé exactement ?", "Vous êtes cliente depuis longtemps ?", "Je m'excuse sincèrement", "On peut se voir pour en discuter ?"] }
         };
         let currentScenario = null, messages = [], score = 0, isTyping = false;
 
         function selectScenario(id) {
             currentScenario = { id, ...SCENARIOS[id] };
             messages = []; score = 0;
+            const isManagement = currentScenario.type === 'management';
             document.getElementById('patientAvatar').textContent = currentScenario.avatar;
             document.getElementById('patientName').textContent = currentScenario.name;
-            document.getElementById('patientInfo').textContent = currentScenario.age + " ans • " + currentScenario.info;
+            document.getElementById('chatLabel').textContent = isManagement ? '💼 Interlocuteur' : '🏥 Patient';
+            document.getElementById('patientInfo').textContent = isManagement ? currentScenario.role + " • " + currentScenario.info : currentScenario.age + " ans • " + currentScenario.info;
             document.getElementById('suggestions').innerHTML = currentScenario.suggestions.map(s => `<button onclick="useSuggestion('${s.replace(/'/g, "\\'")}')">${s}</button>`).join('');
             document.getElementById('messages').innerHTML = '';
             document.getElementById('scoreValue').textContent = '0';
@@ -454,6 +515,42 @@
             }
             // Désescalade
             if (ql.includes('comprend') || ql.includes('solution') || ql.includes('aide') || ql.includes('calme')) points += 10;
+
+            // --- MANAGEMENT SCORING ---
+            // Délégué insistant
+            if ((ql.includes('minimum') || ql.includes('quantité')) && (al.includes('500') || al.includes('minimum'))) points += 25;
+            if ((ql.includes('rupture') || ql.includes('approvisionnement') || ql.includes('disponib')) && (al.includes('rupture') || al.includes('stock'))) points += 20;
+            if (ql.includes('marge') && (al.includes('marge') || al.includes('inférieur') || al.includes('princeps'))) points += 25;
+            if ((ql.includes('objectif') || (ql.includes('pourquoi') && ql.includes('offre'))) && (al.includes('objectif') || al.includes('concurrent'))) points += 20;
+            // Conflit équipe
+            if ((ql.includes('promotion') || ql.includes('poste') || ql.includes('changement')) && (al.includes('promotion') || al.includes('espérai') || al.includes('poste'))) points += 25;
+            if ((ql.includes('personnel') || ql.includes('comment vous') || ql.includes('vous sentez')) && (al.includes('divorce') || al.includes('personnel') || al.includes('difficile'))) points += 25;
+            if (ql.includes('médiation') || ql.includes('ensemble') || (ql.includes('rencontr') && ql.includes('marie'))) points += 20;
+            // Demande augmentation
+            if ((ql.includes('offre') || ql.includes('ailleurs') || ql.includes('proposé')) && (al.includes('offre') || al.includes('autre pharmacie') || al.includes('300'))) points += 25;
+            if ((ql.includes('responsabilit') || ql.includes('évolution') || ql.includes('mission')) && (al.includes('responsabilit') || al.includes('formation'))) points += 20;
+            if ((ql.includes('valoris') || ql.includes('garder') || ql.includes('arrangement') || ql.includes('alternative'))) points += 15;
+            // Erreur délivrance
+            if ((ql.includes('vérifi') || ql.includes('pharmacien') || ql.includes('contrôle')) && (al.includes('téléphone') || al.includes('vérifi') || al.includes('pharmacien'))) points += 25;
+            if ((ql.includes('première fois') || ql.includes('déjà arrivé') || ql.includes('première erreur')) && (al.includes('première') || al.includes('jamais'))) points += 15;
+            if (ql.includes('process') || ql.includes('procédure') || ql.includes('améliorer') || ql.includes('éviter')) points += 20;
+            // Client prix internet
+            if ((ql.includes('pour qui') || ql.includes('enfant') || ql.includes('urgent') || ql.includes('besoin')) && (al.includes('brûl') || al.includes('enfant') || al.includes('maintenant'))) points += 25;
+            if (ql.includes('contrefaçon') || ql.includes('garanti') || ql.includes('traçabilit') || ql.includes('authentici')) points += 20;
+            if (ql.includes('conseil') || ql.includes('service') || ql.includes('valeur ajouté')) points += 15;
+            // Négociation grossiste
+            if ((ql.includes('concurrent') || ql.includes('condition')) && (al.includes('concurrent') || al.includes('meilleur') || al.includes('condition'))) points += 20;
+            if ((ql.includes('livraison') || ql.includes('fréquence')) && (al.includes('livraison') || al.includes('négoci'))) points += 20;
+            if ((ql.includes('autre grossiste') || ql.includes('approché') || ql.includes('proposition')) && (al.includes('approché') || al.includes('grossiste'))) points += 25;
+            // Recadrage retards
+            if ((ql.includes('combien') && ql.includes('retard')) && (al.includes('4') || al.includes('retard'))) points += 15;
+            if ((ql.includes('équipe') || ql.includes('collègue') || ql.includes('impact')) && (al.includes('agac') || al.includes('remarqu') || al.includes('équipe'))) points += 20;
+            if (ql.includes('formaliser') || ql.includes('écrit') || ql.includes('avertissement') || ql.includes('entretien')) points += 20;
+            // Avis Google négatif
+            if (ql.includes('excus') || ql.includes('désolé') || ql.includes('pardon')) points += 15;
+            if ((ql.includes('informatique') || ql.includes('problème') || ql.includes('panne')) && (al.includes('informatique') || al.includes('problème') || al.includes('panne'))) points += 20;
+            if (((ql.includes('client') || ql.includes('fidèle')) && ql.includes('depuis')) && (al.includes('20 ans') || al.includes('fidèle'))) points += 20;
+            if (ql.includes('avis') && (ql.includes('modifier') || ql.includes('retirer') || ql.includes('changer'))) points += 15;
 
             if (points > 0) {
                 score += points;
