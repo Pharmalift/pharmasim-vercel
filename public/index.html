@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PharmaSim Pro | Pharmalift Solutions</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: linear-gradient(135deg, #0f172a, #1e293b); min-height: 100vh; color: #f8fafc; }
@@ -68,6 +69,20 @@
         .score-bar { height: 100%; background: #4ade80; border-radius: 4px; transition: width 0.5s; }
         footer { text-align: center; padding: 40px; color: #475569; font-size: 12px; }
         @media (max-width: 900px) { .game-container.active { grid-template-columns: 1fr; } }
+        .login-screen { display: flex; justify-content: center; align-items: center; min-height: 60vh; }
+        .login-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 20px; padding: 40px; max-width: 420px; width: 100%; text-align: center; }
+        .login-card h2 { font-size: 24px; margin-bottom: 8px; }
+        .login-card .subtitle { color: #94a3b8; margin-bottom: 24px; font-size: 14px; }
+        .login-card input { width: 100%; padding: 16px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; color: #f8fafc; font-size: 20px; text-align: center; letter-spacing: 3px; font-family: monospace; margin-bottom: 16px; }
+        .login-card input:focus { outline: none; border-color: #3b82f6; }
+        .login-card input::placeholder { color: #475569; letter-spacing: 2px; font-size: 16px; }
+        .btn-login { width: 100%; padding: 14px; background: linear-gradient(135deg, #3b82f6, #8b5cf6); border: none; border-radius: 12px; color: white; font-size: 16px; font-weight: 600; cursor: pointer; }
+        .btn-login:disabled { opacity: 0.5; cursor: not-allowed; }
+        .login-error { color: #f87171; font-size: 13px; margin-bottom: 12px; display: none; }
+        .header-right { display: flex; align-items: center; gap: 12px; }
+        .user-badge { padding: 8px 16px; border-radius: 20px; font-size: 12px; font-weight: 600; background: rgba(74,222,128,0.2); color: #4ade80; }
+        .btn-logout { padding: 8px 12px; background: rgba(248,113,113,0.1); border: 1px solid rgba(248,113,113,0.2); border-radius: 8px; color: #f87171; font-size: 12px; cursor: pointer; }
+        .btn-logout:hover { background: rgba(248,113,113,0.2); }
     </style>
 </head>
 <body>
@@ -77,9 +92,24 @@
                 <div class="logo-icon">💊</div>
                 <div><h1>Pharma<span>Sim</span><span class="badge-pro">PRO</span></h1></div>
             </div>
-            <div class="status-badge">🤖 Propulsé par Claude AI</div>
+            <div class="header-right">
+                <div class="status-badge">🤖 Propulsé par Claude AI</div>
+                <div id="userBadge" class="user-badge" style="display:none;"></div>
+                <button id="logoutBtn" class="btn-logout" style="display:none;" onclick="handleLogout()">Déconnexion</button>
+            </div>
         </header>
-        <div id="scenarioSelection">
+        <div id="loginScreen" class="login-screen">
+            <div class="login-card">
+                <div style="font-size:48px;margin-bottom:16px;">💊</div>
+                <h2>PharmaSim Pro</h2>
+                <p class="subtitle">Entrez votre code d'accès PharmaLift</p>
+                <input type="text" id="accessCode" placeholder="XXXX-XXXX-XXXX" maxlength="14" oninput="formatCodeInput(this)" onkeypress="if(event.key==='Enter')handleLogin()">
+                <div id="loginError" class="login-error"></div>
+                <button class="btn-login" id="loginBtn" onclick="handleLogin()">Accéder aux simulations</button>
+                <p style="margin-top:16px;font-size:11px;color:#475569;">Code fourni par votre formateur PharmaLift</p>
+            </div>
+        </div>
+        <div id="scenarioSelection" style="display:none;">
             <h2 style="margin-bottom:24px;">Choisissez un scénario</h2>
 
             <h2 class="section-title">🏥 Scénarios Patients</h2>
@@ -325,6 +355,85 @@
         <footer>PharmaSim Pro © 2026 Pharmalift Solutions • Certification Qualiopi</footer>
     </div>
     <script>
+        // === Supabase ===
+        const SUPABASE_URL = 'https://lczwfbimzhtpaevjruwu.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxjendmYmltemh0cGFldmpydXd1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjkxMDc2NTMsImV4cCI6MjA4NDY4MzY1M30.BCjBDws0yaYInTrrfYJWd_CxA6uQ6YMDmUYATYkr_-I';
+        const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // === Auth ===
+        const Auth = {
+            SESSION_KEY: 'pharmasim_session',
+            USER_KEY: 'pharmasim_user',
+
+            async validateCode(code) {
+                const cleaned = code.toUpperCase().replace(/[^A-Z0-9]/g, '');
+                try {
+                    const { data: ac, error } = await supabaseClient.from('access_codes').select('*').eq('code', cleaned).eq('is_active', true).single();
+                    if (error || !ac) return { valid: false, error: 'Code invalide ou inactif' };
+                    if (ac.expires_at && new Date(ac.expires_at) < new Date()) return { valid: false, error: 'Ce code a expiré' };
+                    if (ac.max_uses && ac.current_uses >= ac.max_uses) return { valid: false, error: "Ce code a atteint sa limite d'utilisation" };
+                    await supabaseClient.from('access_codes').update({ current_uses: (ac.current_uses || 0) + 1, last_used_at: new Date().toISOString() }).eq('id', ac.id);
+                    return { valid: true, codeId: ac.id, accessCode: ac };
+                } catch (e) {
+                    console.error('Erreur validation:', e);
+                    return { valid: false, error: 'Erreur de connexion au serveur' };
+                }
+            },
+
+            async createSession(codeId, userData) {
+                const token = this.generateToken();
+                const exp = new Date(); exp.setDate(exp.getDate() + 30);
+                try {
+                    const { data, error } = await supabaseClient.from('user_sessions').insert({
+                        access_code_id: codeId, session_token: token, user_agent: navigator.userAgent, expires_at: exp.toISOString(), is_active: true
+                    }).select().single();
+                    if (error) throw error;
+                    localStorage.setItem(this.SESSION_KEY, token);
+                    localStorage.setItem(this.USER_KEY, JSON.stringify({ ...userData, sessionId: data.id, loginAt: new Date().toISOString() }));
+                    return { success: true };
+                } catch (e) { console.error('Erreur session:', e); return { success: false }; }
+            },
+
+            generateToken() {
+                const c = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                let t = ''; for (let i = 0; i < 64; i++) t += c.charAt(Math.floor(Math.random() * c.length)); return t;
+            },
+
+            async checkSession() {
+                const token = localStorage.getItem(this.SESSION_KEY);
+                if (!token) return false;
+                try {
+                    const { data, error } = await supabaseClient.from('user_sessions').select('*').eq('session_token', token).eq('is_active', true).single();
+                    if (error || !data) { this.clearSession(); return false; }
+                    if (new Date(data.expires_at) < new Date()) { this.clearSession(); return false; }
+                    return true;
+                } catch (e) { return false; }
+            },
+
+            getUser() { const d = localStorage.getItem(this.USER_KEY); return d ? JSON.parse(d) : null; },
+
+            async logout() {
+                const token = localStorage.getItem(this.SESSION_KEY);
+                if (token) { try { await supabaseClient.from('user_sessions').update({ is_active: false }).eq('session_token', token); } catch (e) {} }
+                this.clearSession();
+            },
+
+            clearSession() { localStorage.removeItem(this.SESSION_KEY); localStorage.removeItem(this.USER_KEY); },
+
+            async logUsage(toolFile, action, metadata) {
+                const token = localStorage.getItem(this.SESSION_KEY);
+                if (!token) return;
+                try {
+                    const { data: session } = await supabaseClient.from('user_sessions').select('id').eq('session_token', token).single();
+                    if (session) {
+                        const entry = { session_id: session.id, tool_file: toolFile, action: action };
+                        if (metadata) entry.metadata = metadata;
+                        await supabaseClient.from('usage_logs').insert(entry);
+                    }
+                } catch (e) { console.error('Log error:', e); }
+            }
+        };
+
         const SCENARIOS = {
             douleur_thoracique: { name: "M. Durand", age: 45, avatar: "⚠️", info: "Pressé, minimise", suggestions: ["Où exactement la douleur ?", "Irradiation bras ?", "Essoufflement ?", "Antécédents familiaux ?"] },
             femme_enceinte_medicaments: { name: "Mme Laurent", age: 29, avatar: "🤰", info: "Enceinte, inquiète", suggestions: ["Pris quelque chose ?", "Quel trimestre ?", "Vomissements ?", "Suivi par qui ?"] },
@@ -365,11 +474,12 @@
             recadrage_retards: { name: "Thomas", type: "management", role: "Préparateur (3 ans)", avatar: "⏰", info: "Sympathique mais désinvolte", suggestions: ["Combien de retards ce mois ?", "Impact sur l'équipe ?", "Formaliser par écrit ?", "Solutions proposées ?"] },
             avis_google_negatif: { name: "Mme Fontaine", type: "management", role: "Cliente (téléphone)", avatar: "⭐", info: "Furieuse, veut des excuses", suggestions: ["Que s'est-il passé exactement ?", "Vous êtes cliente depuis longtemps ?", "Je m'excuse sincèrement", "On peut se voir pour en discuter ?"] }
         };
-        let currentScenario = null, messages = [], score = 0, isTyping = false;
+        let currentScenario = null, messages = [], score = 0, isTyping = false, simStartTime = null, simMessageCount = 0;
 
         function selectScenario(id) {
             currentScenario = { id, ...SCENARIOS[id] };
-            messages = []; score = 0;
+            messages = []; score = 0; simStartTime = Date.now(); simMessageCount = 0;
+            Auth.logUsage('pharmasim:' + id, 'pharmasim_start', { scenario_id: id, scenario_name: SCENARIOS[id].name, type: SCENARIOS[id].type || 'patient' });
             const isManagement = currentScenario.type === 'management';
             document.getElementById('patientAvatar').textContent = currentScenario.avatar;
             document.getElementById('patientName').textContent = currentScenario.name;
@@ -388,6 +498,7 @@
 
         function addMessage(type, content) {
             messages.push({ type, content });
+            if (type === 'pharmacist') simMessageCount++;
             const avatar = type === 'patient' ? currentScenario.avatar : '👨‍⚕️';
             document.getElementById('messages').innerHTML += `<div class="message ${type}"><div class="avatar">${avatar}</div><div class="bubble">${content}</div></div>`;
             document.getElementById('messages').scrollTop = document.getElementById('messages').scrollHeight;
@@ -560,6 +671,12 @@
         }
 
         function endSimulation() {
+            const duration = simStartTime ? Math.round((Date.now() - simStartTime) / 1000) : 0;
+            Auth.logUsage('pharmasim:' + currentScenario.id, 'pharmasim_complete', {
+                scenario_id: currentScenario.id, scenario_name: currentScenario.name,
+                type: currentScenario.type || 'patient', score: score,
+                message_count: simMessageCount, duration_seconds: duration
+            });
             let feedback = score >= 80 ? "🏆 Excellent travail ! Questionnement complet et pertinent." : score >= 50 ? "👍 Bon travail, mais quelques pistes de questionnement manquées." : score >= 25 ? "⚠️ Plusieurs éléments importants n'ont pas été explorés." : "❌ Beaucoup d'informations critiques non détectées. Reprenez le scénario !";
             addMessage('patient', `[Fin de simulation]\n\n${feedback}\n\nScore: ${score} points`);
         }
@@ -568,6 +685,72 @@
             document.getElementById('scenarioSelection').style.display = 'block';
             document.getElementById('gameContainer').classList.remove('active');
         }
+
+        // === Login / Logout / Init ===
+        function formatCodeInput(input) {
+            let v = input.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+            let f = '';
+            for (let i = 0; i < v.length && i < 12; i++) {
+                if (i > 0 && i % 4 === 0) f += '-';
+                f += v[i];
+            }
+            input.value = f;
+        }
+
+        function showApp(user) {
+            document.getElementById('loginScreen').style.display = 'none';
+            document.getElementById('scenarioSelection').style.display = 'block';
+            if (user && (user.prenom || user.nom || user.email)) {
+                const badge = document.getElementById('userBadge');
+                badge.textContent = user.prenom ? (user.prenom + ' ' + user.nom).trim() : user.email;
+                badge.style.display = 'block';
+            }
+            document.getElementById('logoutBtn').style.display = 'block';
+        }
+
+        async function handleLogin() {
+            const codeInput = document.getElementById('accessCode');
+            const errorDiv = document.getElementById('loginError');
+            const loginBtn = document.getElementById('loginBtn');
+            const code = codeInput.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+            if (code.length !== 12) {
+                errorDiv.textContent = 'Veuillez entrer un code valide (12 caractères)';
+                errorDiv.style.display = 'block'; return;
+            }
+            loginBtn.disabled = true; loginBtn.textContent = 'Vérification...';
+            errorDiv.style.display = 'none';
+            const result = await Auth.validateCode(code);
+            if (result.valid) {
+                const ac = result.accessCode;
+                const userData = { prenom: ac.prenom || '', nom: ac.nom || '', email: ac.email || '', etablissement: ac.etablissement || '', codeId: ac.id };
+                const session = await Auth.createSession(result.codeId, userData);
+                if (session.success) { showApp(userData); }
+                else { errorDiv.textContent = 'Erreur de connexion. Réessayez.'; errorDiv.style.display = 'block'; }
+            } else {
+                errorDiv.textContent = result.error; errorDiv.style.display = 'block';
+            }
+            loginBtn.disabled = false; loginBtn.textContent = 'Accéder aux simulations';
+        }
+
+        async function handleLogout() {
+            await Auth.logout();
+            document.getElementById('scenarioSelection').style.display = 'none';
+            document.getElementById('gameContainer').classList.remove('active');
+            document.getElementById('loginScreen').style.display = 'flex';
+            document.getElementById('userBadge').style.display = 'none';
+            document.getElementById('logoutBtn').style.display = 'none';
+            document.getElementById('accessCode').value = '';
+        }
+
+        // === Init ===
+        (async function initApp() {
+            const hasSession = await Auth.checkSession();
+            if (hasSession) {
+                showApp(Auth.getUser());
+            } else {
+                document.getElementById('loginScreen').style.display = 'flex';
+            }
+        })();
     </script>
 </body>
 </html>
