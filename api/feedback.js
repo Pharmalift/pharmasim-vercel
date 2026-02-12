@@ -1,4 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk';
+import SCENARIOS from './scenarios.js';
 
 console.log('[PharmaSim Feedback] Module loaded');
 
@@ -94,7 +95,7 @@ export default async function handler(req, res) {
   if (req.method !== 'POST') return res.status(405).json({ error: 'Method not allowed' });
 
   try {
-    const { scenarioId, messages, score, scenarioType, scenarioData } = req.body;
+    const { scenarioId, messages, score, scenarioType } = req.body;
     console.log('[PharmaSim Feedback] Request:', {
       scenarioId,
       messagesCount: messages?.length,
@@ -106,13 +107,15 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'No conversation messages provided' });
     }
 
-    if (!scenarioData) {
-      return res.status(400).json({ error: 'No scenario data provided' });
+    // Lookup full scenario data server-side (includes hiddenInfo, commercialTips, expectedProducts)
+    const serverScenario = SCENARIOS[scenarioId];
+    if (!serverScenario) {
+      return res.status(400).json({ error: 'Invalid scenario ID' });
     }
 
     const systemPrompt = buildFeedbackSystemPrompt(
-      scenarioData,
-      scenarioType || 'conseil',
+      serverScenario,
+      scenarioType || serverScenario.type || 'conseil',
       score || 0
     );
 
