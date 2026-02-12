@@ -550,6 +550,266 @@ const SCENARIOS = {
       regret: "Elle regrette un peu d'avoir mis l'avis mais ne veut pas perdre la face",
       reconnaissance: "Elle aimerait qu'on la reconnaisse comme bonne cliente"
     }
+  },
+
+  // ========== CONSEILS ASSOCIÉS AUX ORDONNANCES ==========
+  ordo_antibiotique: {
+    name: "M. Blanc", age: 38,
+    personality: "Pressé, vient pendant sa pause déjeuner",
+    context: "Angine traitée par antibiotique, vient avec ordonnance pendant sa pause.",
+    prescription: ["Amoxicilline 1g x3/jour pendant 7 jours"],
+    firstMessage: "Bonjour, j'ai mon ordonnance pour une angine. Vous pouvez me servir vite ? Je suis en pause déjeuner.",
+    hiddenInfo: {
+      otherMeds: "Aucun traitement en cours",
+      selfMedication: "Prend du Gaviscon régulièrement pour des remontées acides (peut affecter l'absorption de l'antibiotique)",
+      medicalHistory: "A tendance à arrêter les antibiotiques dès qu'il se sent mieux, ne finit jamais le traitement complet",
+      allergies: "Aucune allergie connue",
+      otherInfo: "Ne sait pas qu'il faut finir le traitement antibiotique même si les symptômes disparaissent"
+    },
+    expectedProducts: ["Probiotiques (Lactibiane/Ultralevure)", "Spray gorge (Hexaspray)", "Pastilles (Lysopaïne)", "Thermomètre si besoin"],
+    commercialTips: "Proposer les probiotiques naturellement au moment de la délivrance en expliquant que l'antibiotique détruit aussi la flore intestinale. Enchaîner avec le spray gorge pour soulager en attendant que l'antibiotique fasse effet."
+  },
+  ordo_rhino_hiver: {
+    name: "Mme Morel", age: 42,
+    personality: "Enrhumée, pressée mais à l'écoute des conseils",
+    context: "Gros rhume hivernal, vient avec ordonnance du médecin.",
+    prescription: ["Rhinofluimucil", "Efferalgan Codéiné"],
+    firstMessage: "Bonjour, j'ai attrapé un gros rhume, voilà l'ordonnance du médecin. J'espère que ça va passer vite, j'en peux plus.",
+    hiddenInfo: {
+      otherMeds: "Aucun traitement en cours",
+      selfMedication: "Aucune automédication récente",
+      medicalHistory: "Pas d'antécédents particuliers",
+      allergies: "Aucune allergie connue",
+      otherInfo: "Ne boit pas assez d'eau, nez très irrité par les mouchages répétés, fumeuse occasionnelle"
+    },
+    expectedProducts: ["Spray eau de mer (Stérimar)", "Mouchoirs doux", "Inhalation (Pérubore)", "Miel/propolis pour la gorge", "Vitamine C", "Échinacée"],
+    commercialTips: "Proposer le spray eau de mer comme complément indispensable pour accélérer la guérison et bien nettoyer le nez avant le Rhinofluimucil. Enchaîner avec les mouchoirs doux pour le nez irrité et la vitamine C pour soutenir les défenses."
+  },
+  ordo_eczema_bebe: {
+    name: "Mme Da Silva", age: 30,
+    personality: "Jeune maman attentive, pose beaucoup de questions, veut bien faire",
+    context: "Bébé Mia (8 mois) a de l'eczéma, vient avec ordonnance du pédiatre.",
+    prescription: ["Diprosone crème (dermocorticoïde)"],
+    firstMessage: "Bonjour, le pédiatre a prescrit cette crème pour ma fille Mia, elle a de l'eczéma sur les joues et dans les plis. Comment je l'applique ?",
+    hiddenInfo: {
+      otherMeds: "Aucun traitement en cours pour le bébé",
+      selfMedication: "N'utilise pas d'émollient quotidien pour le bébé",
+      medicalHistory: "Terrain atopique familial (le papa est asthmatique)",
+      allergies: "Aucune allergie connue",
+      otherInfo: "Lave le bébé avec du savon de Marseille classique qui est trop agressif pour une peau atopique"
+    },
+    expectedProducts: ["Émollient quotidien (Dexeryl/Lipikar AP+)", "Huile lavante sans savon (Mustela Stelatopia)", "Brumisateur eau thermale", "Syndet/pain dermatologique"],
+    commercialTips: "Expliquer que le dermocorticoïde traite la crise mais que l'émollient quotidien PRÉVIENT les crises suivantes - c'est un duo indissociable. L'huile lavante remplace le savon trop agressif."
+  },
+  ordo_hypertension: {
+    name: "M. Nguyen", age: 65,
+    personality: "Rigoureux, veut bien comprendre, c'est un nouveau traitement pour lui",
+    context: "Premier diagnostic d'hypertension, première ordonnance.",
+    prescription: ["Amlodipine 5mg", "Ramipril 5mg"],
+    firstMessage: "Bonjour, mon médecin vient de me diagnostiquer de l'hypertension. C'est ma première ordonnance pour ça. Comment ça marche ces médicaments ?",
+    hiddenInfo: {
+      otherMeds: "Aucun autre traitement en cours",
+      selfMedication: "Aucune automédication",
+      medicalHistory: "Pas d'antécédent cardiovasculaire majeur",
+      allergies: "Aucune allergie connue",
+      otherInfo: "Ne possède pas d'autotensiomètre, mange très salé, consomme du réglisse quotidiennement (fait monter la tension artérielle)"
+    },
+    expectedProducts: ["Autotensiomètre (Omron)", "Carnet de suivi tensionnel", "Sel de régime", "Compléments oméga-3"],
+    commercialTips: "Proposer l'autotensiomètre en expliquant que le suivi tensionnel à domicile est recommandé par les cardiologues et que ça permet de mieux ajuster le traitement. Le carnet de suivi va avec."
+  },
+  ordo_diabete_insuline: {
+    name: "Mme Berger", age: 48,
+    personality: "Inquiète, le passage à l'insuline est vécu comme un échec personnel",
+    context: "Passage à l'insuline, première délivrance, a besoin d'explications.",
+    prescription: ["Lantus SoloStar", "Aiguilles pour stylo", "Bandelettes de glycémie"],
+    firstMessage: "Bonjour... Mon médecin m'a mise sous insuline. Je... je pensais que ça n'arriverait jamais. Il m'a dit de venir vous voir pour les explications.",
+    hiddenInfo: {
+      otherMeds: "Continue la Metformine mais ne comprend pas pourquoi prendre les deux",
+      selfMedication: "Aucune automédication",
+      medicalHistory: "Diabète de type 2, peur des piqûres",
+      allergies: "Aucune allergie connue",
+      otherInfo: "Voyage prévu dans 3 semaines (problème de conservation de l'insuline), ne sait pas gérer les hypoglycémies"
+    },
+    expectedProducts: ["Pochette isotherme (conservation insuline en voyage)", "Sucres rapides (Hypo-Stop/Dextro Energy)", "Crème pieds diabétiques (Akiléïne)", "Lancettes supplémentaires", "Carnet de glycémie"],
+    commercialTips: "La pochette isotherme est indispensable pour le voyage qu'elle prépare. Les sucres rapides sont une sécurité essentielle à toujours avoir sur soi. La crème pour les pieds s'inscrit dans le suivi global du diabète."
+  },
+  ordo_douleur_dos: {
+    name: "M. Ramos", age: 48,
+    personality: "Travailleur du BTP, costaud, veut être soulagé rapidement pour retourner au chantier",
+    context: "Lumbago aigu survenu au travail, vient avec ordonnance.",
+    prescription: ["Kétoprofène gel", "Thiocolchicoside"],
+    firstMessage: "Aïe... Bonjour. J'ai mon ordonnance pour le dos. Je me suis bloqué au boulot, j'ai un chantier à finir cette semaine.",
+    hiddenInfo: {
+      otherMeds: "Aucun traitement de fond en cours",
+      selfMedication: "Prend du Nurofen en automédication en plus de l'ordonnance (risque de surdosage AINS)",
+      medicalHistory: "Port de charges lourdes quotidien, ne s'échauffe jamais, épisodes de lumbago récurrents",
+      allergies: "Aucune allergie connue",
+      otherInfo: "Veut absolument reprendre le travail dès demain malgré la douleur"
+    },
+    expectedProducts: ["Ceinture lombaire (Thuasne)", "Patches chauffants (ThermaCare)", "Gel de massage (Synthol)", "Balle de massage", "Arnica (Arnigel)"],
+    commercialTips: "Proposer la ceinture lombaire pour pouvoir reprendre le travail en sécurité et les patchs chauffants ThermaCare pour la nuit. Le gel Synthol en complément pour les massages."
+  },
+  ordo_allergie_saisonniere: {
+    name: "Mme Lambert", age: 35,
+    personality: "Active, sportive, frustrée car les allergies l'empêchent de courir dehors",
+    context: "Allergies saisonnières printanières, vient avec ordonnance.",
+    prescription: ["Desloratadine 5mg", "Cromoglicate collyre"],
+    firstMessage: "Bonjour, j'ai mon ordonnance pour les allergies. Chaque printemps c'est pareil, j'ai le nez qui coule et les yeux qui piquent. En plus je ne peux plus aller courir.",
+    hiddenInfo: {
+      otherMeds: "Aucun autre traitement en cours",
+      selfMedication: "Aucune automédication récente",
+      medicalHistory: "Asthme léger dans l'enfance, porte des lentilles de contact (vérifier compatibilité collyre)",
+      allergies: "Allergies aux pollens de graminées",
+      otherInfo: "Vit avec un chat (possible allergène permanent en plus des pollens saisonniers)"
+    },
+    expectedProducts: ["Spray barrière nasal (Allergyl/Humex allergie)", "Lunettes de soleil", "Sérum physiologique", "Baume lèvres protecteur", "Taie anti-acariens"],
+    commercialTips: "Proposer le spray barrière nasal en expliquant qu'il permet de continuer le sport en extérieur en créant un film protecteur. Le sérum physiologique pour rincer le nez au retour de course."
+  },
+  ordo_gastro_enfant: {
+    name: "M. Fournier", age: 40,
+    personality: "Papa stressé, l'enfant vomit depuis la veille, un peu paniqué",
+    context: "Gastro-entérite de son fils Léo (5 ans), vient avec ordonnance.",
+    prescription: ["Tiorfan", "Smecta"],
+    firstMessage: "Bonjour, mon fils Léo a une gastro, il vomit depuis hier soir et a la diarrhée. Voilà l'ordonnance du médecin. C'est la panique à la maison, sa petite sœur est aussi à la maison.",
+    hiddenInfo: {
+      otherMeds: "Aucun traitement en cours pour l'enfant",
+      selfMedication: "Aucune automédication",
+      medicalHistory: "Pas d'antécédent particulier pour l'enfant",
+      allergies: "Aucune allergie connue",
+      otherInfo: "Ne sait pas préparer un soluté de réhydratation orale, petite sœur de 2 ans risque d'être contaminée, pas de gel hydroalcoolique à la maison, l'enfant refuse de boire"
+    },
+    expectedProducts: ["Soluté de réhydratation orale (Adiaril)", "Probiotiques enfant (Ultralevure sachets)", "Gel hydroalcoolique", "Lingettes désinfectantes", "Solution nasale"],
+    commercialTips: "Le SRO est INDISPENSABLE en cas de gastro chez l'enfant pour éviter la déshydratation - c'est la priorité absolue. Le gel hydroalcoolique et les lingettes pour protéger la petite sœur de la contagion."
+  },
+
+  // ========== CONSEILS PATHOLOGIES COURANTES ==========
+  conseil_rhume: {
+    name: "M. Lemaire", age: 35,
+    personality: "Enrhumé, veut être soulagé vite, un peu impatient",
+    context: "Vient au comptoir avec le nez bouché depuis 3 jours, sans ordonnance.",
+    prescription: [],
+    firstMessage: "Bonjour, j'ai le nez complètement bouché depuis 3 jours, c'est l'enfer. Donnez-moi quelque chose d'efficace.",
+    hiddenInfo: {
+      otherMeds: "Traitement antihypertenseur en cours (contre-indication aux vasoconstricteurs)",
+      selfMedication: "Utilise déjà Actifed et Aturgyl depuis 5 jours (vasoconstricteurs en excès et dangereux avec son hypertension)",
+      medicalHistory: "Hypertendu sous traitement",
+      allergies: "Aucune allergie connue",
+      otherInfo: "Ne boit pas assez d'eau, ne fait pas le lien entre son hypertension et la contre-indication aux vasoconstricteurs"
+    },
+    expectedProducts: ["Spray eau de mer hypertonique (Physiomer/Stérimar)", "Paracétamol", "Inhalation (Pérubore/Aromasol)", "Pastilles gorge", "Vitamine C", "Tisane thym/miel", "Mouchoirs doux"],
+    commercialTips: "Construire un panier complet autour du symptôme sans vasoconstricteurs. Proposer la vitamine C et le thym/miel comme complément naturel agréable."
+  },
+  conseil_jambes_lourdes: {
+    name: "Mme Garnier", age: 52,
+    personality: "Sédentaire, travaille debout toute la journée en boulangerie, souffre de la chaleur",
+    context: "Été, jambes lourdes et gonflées, vient sans ordonnance.",
+    prescription: [],
+    firstMessage: "Bonjour, j'ai les jambes très lourdes et gonflées avec cette chaleur. Mes chevilles doublent de volume le soir. Vous avez quelque chose ?",
+    hiddenInfo: {
+      otherMeds: "Sous pilule contraceptive (toujours sous contraception orale à 52 ans, facteur de risque veineux)",
+      selfMedication: "Aucune automédication",
+      medicalHistory: "Fume 5 cigarettes par jour (facteur de risque vasculaire supplémentaire)",
+      allergies: "Aucune allergie connue",
+      otherInfo: "Un mollet plus gonflé que l'autre (signe d'alerte possible phlébite à orienter vers le médecin), ne porte pas de contention"
+    },
+    expectedProducts: ["Veinotonique oral (Daflon/Cyclo3 Fort)", "Gel jambes fraîcheur (Thrombex gel)", "Bas de contention (Sigvaris)", "Spray fraîcheur", "Complément vigne rouge/marronnier"],
+    commercialTips: "Les bas de contention sont la base du traitement veineux, le veinotonique oral complète l'action sur le long terme, et le gel apporte un soulagement immédiat."
+  },
+  conseil_solaire_famille: {
+    name: "Famille Martin", age: 40,
+    personality: "Famille enthousiaste, part en vacances au bord de mer, veut se préparer",
+    context: "Couple avec 2 enfants (4 et 8 ans), départ en vacances à la mer.",
+    prescription: [],
+    firstMessage: "Bonjour ! On part en vacances à la mer la semaine prochaine avec nos deux enfants. Il nous faut de la crème solaire. Qu'est-ce que vous conseillez ?",
+    hiddenInfo: {
+      otherMeds: "Monsieur prend du millepertuis (photosensibilisant, risque de brûlure solaire accru)",
+      selfMedication: "Aucune autre automédication",
+      medicalHistory: "La fille de 4 ans a une peau très claire type phototype I (très sensible au soleil)",
+      allergies: "Aucune allergie connue",
+      otherInfo: "Pas de chapeau ni lunettes de soleil prévus pour les enfants, destination tropicale (risque moustiques en plus du soleil)"
+    },
+    expectedProducts: ["SPF50+ enfants (Avène/Bioderma)", "SPF30-50 adultes", "Après-soleil", "Stick lèvres SPF", "Brumisateur", "Anti-moustiques (Cinq sur Cinq/Insect Ecran)", "Biafine", "Trousse de voyage"],
+    commercialTips: "Construire la trousse solaire complète pour toute la famille. Ne pas oublier les anti-moustiques si destination tropicale. L'après-soleil pour le confort du soir."
+  },
+  conseil_digestion: {
+    name: "Mme Torres", age: 45,
+    personality: "Mange vite, stressée par le travail, problèmes digestifs récurrents",
+    context: "Ballonnements et digestion difficile après les repas, sans ordonnance.",
+    prescription: [],
+    firstMessage: "Bonjour, j'ai tout le temps des ballonnements après manger, c'est très gênant surtout au travail. Vous avez quelque chose d'efficace ?",
+    hiddenInfo: {
+      otherMeds: "Aucun traitement prescrit en cours",
+      selfMedication: "Prend du Spasfon de temps en temps mais ne le mentionne pas spontanément",
+      medicalHistory: "Pas d'antécédent digestif particulier diagnostiqué",
+      allergies: "Aucune allergie connue",
+      otherInfo: "Mange très vite à cause du stress au travail, boit 4 à 5 cafés par jour (irritant digestif)"
+    },
+    expectedProducts: ["Charbon végétal ou Météospasmyl", "Probiotiques en cure (Lactibiane/Ergyphilus)", "Tisane digestive (fenouil/menthe poivrée)", "Complément artichaut/radis noir", "Enzyme digestive"],
+    commercialTips: "Proposer une cure de probiotiques pour rééquilibrer la flore intestinale sur le long terme, plus la tisane digestive comme rituel quotidien agréable après le repas."
+  },
+  conseil_fatigue_etudiant: {
+    name: "M. Robin", age: 28,
+    personality: "Intellectuel, épuisé, soutenance de thèse dans 3 semaines",
+    context: "Fatigue intense et troubles de la concentration, vient sans ordonnance.",
+    prescription: [],
+    firstMessage: "Bonjour, je suis complètement crevé en ce moment. J'ai ma soutenance de thèse dans 3 semaines et je n'arrive plus à me concentrer. Vous avez des vitamines ou quelque chose ?",
+    hiddenInfo: {
+      otherMeds: "Aucun traitement en cours",
+      selfMedication: "Boit beaucoup de café et de boissons énergisantes pour tenir",
+      medicalHistory: "Pas d'antécédent médical particulier",
+      allergies: "Aucune allergie connue",
+      otherInfo: "Dort seulement 5 heures par nuit, mange mal (fast food principalement), pâleur visible (possible carence en fer)"
+    },
+    expectedProducts: ["Magnésium + B6 (Magné B6/Formag)", "Multivitamines (Berocca/Supradyn)", "Gelée royale/ginseng (Arkopharma)", "Oméga-3 (concentration)", "Spray mélatonine (sommeil)", "Ampoules de fer si pâleur"],
+    commercialTips: "Construire un pack performance intellectuelle : magnésium pour le stress, oméga-3 pour la concentration, mélatonine pour optimiser la qualité du sommeil."
+  },
+  conseil_bebe_premier: {
+    name: "Mme Diallo", age: 30,
+    personality: "Jeune maman anxieuse, premier bébé Aya (1 mois), veut tout bien faire",
+    context: "Bébé a des coliques et érythème fessier, vient sans ordonnance.",
+    prescription: [],
+    firstMessage: "Bonjour, mon bébé pleure beaucoup le soir, elle a 1 mois. Ma mère dit que c'est des coliques. Et en plus elle a les fesses toutes rouges. Je suis perdue...",
+    hiddenInfo: {
+      otherMeds: "Aucun traitement en cours pour le bébé",
+      selfMedication: "Aucune automédication",
+      medicalHistory: "Allaite mais envisage d'arrêter par fatigue",
+      allergies: "Aucune allergie connue",
+      otherInfo: "N'utilise pas de liniment mais des lingettes parfumées (irritant pour les fesses), ne change pas assez souvent la couche, le bébé régurgite aussi"
+    },
+    expectedProducts: ["Calmosine/Biogaia (coliques)", "Liniment oléocalcaire", "Couches hypoallergéniques", "Crème change (Bepanthen/Cicalfate)", "Eau thermale", "Coussin chauffant bébé", "Tétine adaptée"],
+    commercialTips: "Montrer le liniment comme alternative douce aux lingettes parfumées. Proposer la crème change en duo avec le liniment. Calmosine ou Biogaia pour les coliques."
+  },
+  conseil_sport_reprise: {
+    name: "Thomas", age: 25,
+    personality: "Motivé, a repris le sport après 2 ans d'arrêt, souffre mais ne veut pas ralentir",
+    context: "Courbatures et crampes après reprise intensive du sport, sans ordonnance.",
+    prescription: [],
+    firstMessage: "Salut ! J'ai repris la muscu et le running il y a 2 semaines et j'ai des courbatures de fou. Mes mollets me tuent et j'ai des crampes la nuit. Vous avez des trucs ?",
+    hiddenInfo: {
+      otherMeds: "Aucun traitement en cours",
+      selfMedication: "Aucune automédication",
+      medicalHistory: "Pas d'antécédent médical",
+      allergies: "Aucune allergie connue",
+      otherInfo: "Ne s'hydrate pas assez pendant l'effort, ne s'étire pas, a repris trop intensément (entraînement tous les jours), ne mange pas assez de protéines"
+    },
+    expectedProducts: ["Arnica (Arnigel + granules)", "Magnésium (crampes)", "Baume/gel chauffant (Synthol)", "Boisson isotonique/électrolytes", "Protéines/BCAA", "Compresse froid", "Bande de contention"],
+    commercialTips: "Le magnésium est la base pour les crampes nocturnes, proposer l'arnica en gel + granules en combo, et la boisson isotonique pour l'hydratation pendant l'effort."
+  },
+  conseil_poux_rentree: {
+    name: "Mme Martinez", age: 38,
+    personality: "Débordée, maman de 3 enfants, c'est la rentrée, veut une solution rapide",
+    context: "Poux détectés chez un de ses enfants, vient sans ordonnance.",
+    prescription: [],
+    firstMessage: "Bonjour, mon fils a des poux. L'école vient de m'appeler. Il me faut un traitement. Donnez-moi le plus efficace !",
+    hiddenInfo: {
+      otherMeds: "Aucun traitement en cours",
+      selfMedication: "Aucune automédication",
+      medicalHistory: "Pas d'antécédent particulier",
+      allergies: "Aucune allergie connue",
+      otherInfo: "A 2 autres enfants à vérifier (risque de contamination), n'a jamais traité de poux avant, ne pense pas à traiter l'environnement (literie, doudous, bonnets), son fils a les cheveux longs"
+    },
+    expectedProducts: ["Traitement anti-poux (Pouxit XF/Paranix)", "Peigne fin métallique (Assy)", "Spray répulsif préventif", "Spray textile/literie", "Shampooing lavande", "Élastiques cheveux", "Charlotte"],
+    commercialTips: "Le traitement seul ne suffit pas. Proposer le spray textile pour éviter la réinfestation, le répulsif pour protéger les frères et sœurs, et le peigne métallique indispensable pour les lentes."
   }
 };
 
