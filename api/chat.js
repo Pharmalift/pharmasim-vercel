@@ -101,7 +101,7 @@ export default async function handler(req, res) {
     console.log('[PharmaSim] Calling Claude API with', conversationMessages.length, 'messages');
 
     const response = await getClient().messages.create({
-      model: 'claude-3-5-haiku-latest',
+      model: 'claude-haiku-4-5-20251001',
       max_tokens: 300,
       system: systemPrompt,
       messages: conversationMessages
